@@ -2,7 +2,7 @@ import React from "react";
 
 class TodoListTask extends React.Component {
   state = {
-    aditMode: false
+    aditMode: false //меняю инпут на поле спан для дозаписи
   };
 
   activeEditMode = () => {
@@ -27,6 +27,11 @@ class TodoListTask extends React.Component {
     this.props.changeTask(this.props.task.id, { title: title });
   };
 
+  handleDeleteTask = () => {
+    let task = this.props.task;
+    this.props.deleteTask(task);
+  };
+
   render = () => {
     let classForTask = this.props.task.isDone ? "todoList-task done" : "";
     return (
@@ -47,10 +52,11 @@ class TodoListTask extends React.Component {
           />
         ) : (
           <span className={classForTask} onClick={this.activeEditMode}>
-            {this.props.task.id} - {this.props.task.title},
+            {this.props.task.id} - {this.props.task.title},ы
             {this.props.task.priority}
           </span>
         )}
+        <button onClick={this.handleDeleteTask}>Delete</button>
       </div>
     );
   };

@@ -58,6 +58,15 @@ class TodoList extends React.Component {
     });
   };
 
+  deleteTask = task => {
+    let tasksCopy = this.state.tasks.filter(stateTask => {
+      return stateTask !== task;
+    });
+    this.setState({ tasks: tasksCopy }, () => {
+      this.saveState();
+    });
+  };
+
   changeTask = (taskId, obj) => {
     let newTasks = this.state.tasks.map(task => {
       if (task.id !== taskId) return task;
@@ -106,6 +115,7 @@ class TodoList extends React.Component {
           <TodoListTasks
             tasks={getFilterTasks(this.state.tasks, this.state.filterValue)}
             changeTask={this.changeTask}
+            deleteTask={this.deleteTask}
           />
           <TodoListFooter
             changeFilter={this.changeFilter}
