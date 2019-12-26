@@ -1,16 +1,12 @@
-import React from "react";
+import React, { useDebugValue } from "react";
 import "./App.css";
 import TodoListFooter from "./TodoListFooter";
 import TodoListTasks from "./TodoListTasks";
 import TodoListTitle from "./TodoListTitle";
 import AddNewItemForm from "./AddNewItemForm";
+import { connect } from "react-redux";
 
 class TodoList extends React.Component {
-  state = {
-    tasks: [],
-    filterValue: "Completed"
-  };
-
   componentDidMount() {
     this.restoreState();
   }
@@ -51,11 +47,13 @@ class TodoList extends React.Component {
       isDone: false,
       priority: "high"
     };
+
+    this.props.addTask(newTask);
     this.nextTAskId++;
-    let newTasks = [...this.state.tasks, newTask];
+    /*     let newTasks = [...this.state.tasks, newTask];
     this.setState({ tasks: newTasks }, () => {
       this.saveState();
-    });
+    }); */
   };
 
   deleteTask = task => {
@@ -91,6 +89,7 @@ class TodoList extends React.Component {
   };
 
   render() {
+    debugger;
     const getFilterTasks = (tasks, filter) => {
       return tasks.filter(task => {
         // eslint-disable-next-line default-case
@@ -113,13 +112,17 @@ class TodoList extends React.Component {
             <AddNewItemForm addItem={this.addTask} />
           </header>
           <TodoListTasks
-            tasks={getFilterTasks(this.state.tasks, this.state.filterValue)}
+            tasks={
+              !this.props.tasks.length
+                ? getFilterTasks(this.props.tasks, "All")
+                : "No tasks"
+            }
             changeTask={this.changeTask}
             deleteTask={this.deleteTask}
           />
           <TodoListFooter
             changeFilter={this.changeFilter}
-            filterValue={this.state.filterValue}
+            filterValue={"All"}
           />
         </div>
       </div>
@@ -127,4 +130,19 @@ class TodoList extends React.Component {
   }
 }
 
-export default TodoList;
+const mapDispatchToProps = dispatch => {
+  return {
+    addTask: newTask => {
+      const action = {
+        type: "ADD-TASK",
+        newTask: newTask
+      };
+
+      dispatch(action);
+    }
+  };
+};
+
+const ConnectedToDoList = connect(null, mapDispatchToProps)(TodoList);
+
+export default ConnectedToDoList;
