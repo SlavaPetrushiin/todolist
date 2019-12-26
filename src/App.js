@@ -1,26 +1,21 @@
 import React from "react";
 import "./App.css";
-import TodoList from "./TodoList";
-import AddNewItemForm from "./AddNewItemForm";
+import TodoList from "./Component/TodoList";
+import AddNewItemForm from "./Component/AddNewItemForm";
+import { connect } from "react-redux";
 
 class App extends React.Component {
-  state = {
-    todoLists: []
-  };
-
   nextListId = 0;
 
-  componentDidMount() {
+  /*   componentDidMount() {
     this.restoreState();
-  }
-
-  saveState = () => {
+  } */
+  /*   saveState = () => {
     //сохранение стейта а локолстор
     let stateAsString = JSON.stringify(this.state);
     localStorage.setItem("our-state", stateAsString);
-  };
-
-  restoreState = () => {
+  }; */
+  /*   restoreState = () => {
     let state = {
       todoLists: []
     };
@@ -37,23 +32,26 @@ class App extends React.Component {
         }
       });
     });
-  };
+  }; */
 
-  addToDoList = text => {
-    let newToDolist = { id: this.nextListId + 1, title: text };
+  addToDoList = titleNewToDoList => {
+    let newToDolist = {
+      id: this.nextListId + 1,
+      title: titleNewToDoList,
+      tasks: []
+    };
     this.nextListId++;
-    this.setState(
-      {
-        ...this.state,
-        todoLists: [...this.state.todoLists, newToDolist]
-      },
-      () => this.saveState()
-    );
+    this.props.addToDoList(newToDolist);
   };
 
   render() {
-    let todoLists = this.state.todoLists.map(list => (
-      <TodoList id={list.id} title={list.title} key={list.id} />
+    let todoLists = this.props.todoLists.map(list => (
+      <TodoList
+        id={list.id}
+        title={list.title}
+        key={list.id}
+        tasks={list.tasks}
+      />
     ));
 
     return (
@@ -65,4 +63,24 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    todoLists: state.todoListsPage.todoLists
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addToDoList: newToDoList => {
+      const action = {
+        type: "ADD-TODOLIST",
+        newToDoList: newToDoList
+      };
+      dispatch(action);
+    }
+  };
+};
+
+const AppContainer = connect(mapStateToProps, mapDispatchToProps)(App);
+
+export default AppContainer;
