@@ -7,17 +7,15 @@ import ToDoList from "./TodoList";
 class App extends React.Component {
   nextListId = 0;
 
-  componentDidMount() {
+  /*   componentDidMount() {
     this.restoreState();
-  }
-
-  saveState = () => {
+  } */
+  /*   saveState = () => {
     //сохранение стейта а локолстор
     let stateAsString = JSON.stringify(this.state);
     localStorage.setItem("our-state", stateAsString);
-  };
-
-  restoreState = () => {
+  }; */
+  /*   restoreState = () => {
     let state = {
       todoLists: []
     };
@@ -34,7 +32,7 @@ class App extends React.Component {
         }
       });
     });
-  };
+  }; */
 
   addToDoList = text => {
     let newToDolist = { id: this.nextListId + 1, title: text, tasks: [] };
