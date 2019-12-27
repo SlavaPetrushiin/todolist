@@ -49,6 +49,34 @@ const toDoListReducer = (state = initialState, action) => {
           }
         })
       };
+    case "FILTER-TASK":
+      return {
+        ...state,
+        todoLists: state.todoLists.map(todoList => {
+          if (todoList.id === action.todoListId) {
+            return { ...todoList, filterValue: action.newFilterValue };
+          } else {
+            return todoList;
+          }
+        })
+      };
+    case "DELETE-TASK":
+      debugger;
+      return {
+        ...state,
+        todoLists: state.todoLists.map(todoList => {
+          if (todoList.id === action.todoListId) {
+            return {
+              ...todoList, //	1 ищем совпадение листа
+              tasks: todoList.tasks.filter(task => {
+                return task.id !== action.taskId;
+              })
+            };
+          } else {
+            return todoList;
+          }
+        })
+      };
     default:
       return state;
   }
