@@ -3,10 +3,10 @@ import "./../App.css";
 import TodoListFooter from "./TodoListFooter";
 import TodoListTasks from "./TodoListTasks";
 import TodoListTitle from "./TodoListTitle";
-import AddNewItemForm from "./AddNewItemForm";
 import { connect } from "react-redux";
+import AddNewItemForm from "./AddNewItemForm";
 
-class TodoList extends React.Component {
+class ToDoList extends React.Component {
   state = {
     filterValue: "Completed"
   };
@@ -136,6 +136,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const TodoListContainer = connect(null, mapDispatchToProps)(TodoList);
+const TodoListContainer = connect(null, mapDispatchToProps)(ToDoList);
 
 export default TodoListContainer;

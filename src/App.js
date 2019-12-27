@@ -1,8 +1,8 @@
 import React from "react";
 import "./App.css";
-import AddNewItemForm from "./AddNewItemForm";
+import AddNewItemForm from "./Component/AddNewItemForm";
+import TodoList from "./Component/TodoList";
 import { connect } from "react-redux";
-import ToDoList from "./TodoList";
 
 class App extends React.Component {
   nextListId = 0;
@@ -35,6 +35,7 @@ class App extends React.Component {
   }; */
 
   addToDoList = text => {
+    debugger;
     let newToDolist = { id: this.nextListId + 1, title: text, tasks: [] };
     this.nextListId++;
     this.props.addTodolist(newToDolist);
@@ -43,7 +44,7 @@ class App extends React.Component {
   render() {
     debugger;
     let todoLists = this.props.todoLists.map(list => (
-      <ToDoList
+      <TodoList
         id={list.id}
         title={list.title}
         key={list.id}
@@ -62,7 +63,7 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    todoLists: state.todoLists
+    todoLists: state.todoListsPage.todoLists
   };
 };
 

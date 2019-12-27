@@ -16,7 +16,7 @@ const toDoListReducer = (state = initialState, action) => {
     case "ADD-TODOLIST":
       return {
         ...state,
-        todoLists: [...state.todoLists, action.newToDoList]
+        todoLists: [...state.todoLists, action.newToDolist]
       };
     case "ADD-TASK": //Добавление новых тасок в лист
       return {
