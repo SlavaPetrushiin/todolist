@@ -1,3 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  padding: 0;
+}
+
 .App {
 }
 
@@ -23,4 +35,27 @@
 
 .todoList-task.done {
   opacity: 0.5;
+}
+
+.todoList {
+  width: 450px;
+  border: 1px solid black;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+}
+
+.header {
+}
+
+.headerTitle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.todoList-task {
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 5px;
 }

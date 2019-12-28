@@ -18,17 +18,20 @@ class TodoListTask extends React.Component {
   //изменение чекбокса
   onIsDoneChanged = event => {
     let isDone = event.currentTarget.checked;
-    this.props.changeTask(this.props.task.id, { isDone: isDone });
+    this.props.changeTask(
+      this.props.task.id, //id таски
+      { isDone: isDone },
+      this.props.todoListId //id листа
+    );
   };
 
   //изменение глобальной таски по изменению инпута
   onTitleChanged = event => {
     let title = event.currentTarget.value;
-    this.props.changeTask(
-      this.props.task.id,
-      { title: title },
-      this.props.todoListId
-    );
+    this.props.changeTask(this.props.task.id, { title: title });
+  };
+  handleDeleteTask = event => {
+    this.props.deleteTask(this.props.task.id);
   };
 
   render = () => {
@@ -55,6 +58,9 @@ class TodoListTask extends React.Component {
             {this.props.task.priority}
           </span>
         )}
+        <span style={{ color: "red" }} onClick={this.handleDeleteTask}>
+          &#10008;
+        </span>
       </div>
     );
   };

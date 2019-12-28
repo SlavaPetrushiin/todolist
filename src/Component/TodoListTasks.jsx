@@ -8,11 +8,13 @@ class TodoListTasks extends React.Component {
         <TodoListTask
           task={task}
           changeTask={this.props.changeTask}
-          todoListId={this.props.todoListId}
+          deleteTask={this.props.deleteTask}
         />
       );
     });
-    return <div className="todoList-tasks">{tasksElements}</div>;
+    return tasksElements.length !== 0 ? (
+      <div className="todoList-tasks">{tasksElements}</div>
+    ) : null;
   };
 }
 

@@ -7,10 +7,6 @@ import { connect } from "react-redux";
 import AddNewItemForm from "./AddNewItemForm";
 
 class ToDoList extends React.Component {
-  state = {
-    filterValue: "Completed"
-  };
-
   nextTAskId = 0;
 
   /*  componentDidMount() {
@@ -41,7 +37,6 @@ class ToDoList extends React.Component {
   }; */
 
   addTask = text => {
-    debugger;
     let newText = text;
     let newTask = {
       id: this.nextTAskId,
@@ -53,28 +48,20 @@ class ToDoList extends React.Component {
     this.props.addTask(newTask, this.props.id);
   };
 
-  changeTask = (taskId, obj, todoListId) => {
-    this.props.changeTask(taskId, obj, todoListId);
-    /*     let newTasks = this.props.tasks.map(task => {
-      if (task.id !== taskId) return task;
-      else {
-        return { ...task, ...obj };
-      }
-    });
-    this.setState({ tasks: newTasks }, () => {
-      this.saveState();
-    }); */
+  changeTask = (taskId, obj) => {
+    this.props.changeTask(taskId, obj, this.props.id);
   };
 
   changeFilter = newFilterValue => {
-    this.setState(
-      {
-        filterValue: newFilterValue
-      },
-      () => {
-        this.saveState();
-      }
-    );
+    this.props.filterTasks(newFilterValue, this.props.id);
+  };
+
+  deleteTask = taskId => {
+    this.props.deleteTask(taskId, this.props.id);
+  };
+
+  deleteToDoList = () => {
+    this.props.deleteToDoList(this.props.id);
   };
 
   render() {
@@ -95,18 +82,21 @@ class ToDoList extends React.Component {
     return (
       <div className="App">
         <div className="todoList">
-          <header>
-            <TodoListTitle title={this.props.title} />
+          <header className="header">
+            <TodoListTitle
+              title={this.props.title}
+              deleteToDoList={this.deleteToDoList}
+            />
             <AddNewItemForm addItem={this.addTask} />
           </header>
           <TodoListTasks
-            tasks={getFilterTasks(this.props.tasks, this.state.filterValue)}
+            tasks={getFilterTasks(this.props.tasks, this.props.filterValue)}
             changeTask={this.changeTask}
-            todoListId={this.props.id} //Уточнить, можно ли так прокидывать???
+            deleteTask={this.deleteTask}
           />
           <TodoListFooter
             changeFilter={this.changeFilter}
-            filterValue={this.state.filterValue}
+            filterValue={this.props.filterValue}
           />
         </div>
       </div>
@@ -129,6 +119,29 @@ const mapDispatchToProps = dispatch => {
         type: "CHANGE-TASK",
         taskId,
         obj, //объект с title
+        todoListId
+      };
+      dispatch(action);
+    },
+    filterTasks: (newFilterValue, todoListId) => {
+      const action = {
+        type: "FILTER-TASK",
+        newFilterValue,
+        todoListId
+      };
+      dispatch(action);
+    },
+    deleteTask: (taskId, todoListId) => {
+      const action = {
+        type: "DELETE-TASK",
+        taskId,
+        todoListId
+      };
+      dispatch(action);
+    },
+    deleteToDoList: todoListId => {
+      const action = {
+        type: "DELETE-TODOLIST",
         todoListId
       };
       dispatch(action);

@@ -11,7 +11,6 @@ const initialState = {
 };
 
 const toDoListReducer = (state = initialState, action) => {
-  debugger;
   switch (action.type) {
     case "ADD-TODOLIST":
       return {
@@ -61,7 +60,6 @@ const toDoListReducer = (state = initialState, action) => {
         })
       };
     case "DELETE-TASK":
-      debugger;
       return {
         ...state,
         todoLists: state.todoLists.map(todoList => {
@@ -76,6 +74,11 @@ const toDoListReducer = (state = initialState, action) => {
             return todoList;
           }
         })
+      };
+    case "DELETE-TODOLIST":
+      return {
+        ...state,
+        todoLists: state.todoLists.filter(list => list.id !== action.todoListId)
       };
     default:
       return state;
