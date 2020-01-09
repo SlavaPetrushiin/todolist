@@ -4,6 +4,7 @@ export const CHANGE_TASK = "TodoList/Reducer/CHANGE-TASK";
 export const FILTER_TASK = "TodoList/Reducer/FILTER-TASK";
 export const DELETE_TASK = "TodoList/Reducer/DELETE-TASK";
 export const DELETE_TODOLIST = "TodoList/Reducer/DELETE-TODOLIST";
+export const SET_TODOLIST = "TodoList/Reducer/SET-TODOLIST";
 
 const initialState = {
   todoLists: []
@@ -79,6 +80,17 @@ export const toDoListReducer = (state = initialState, action) => {
         ...state,
         todoLists: state.todoLists.filter(list => list.id !== action.todoListId)
       };
+    case SET_TODOLIST:
+      let todoLists = action.todoLists.map(todoList => {
+        return {
+          ...todoList,
+          tasks: []
+        };
+      });
+      return {
+        ...state,
+        todoLists: todoLists
+      };
     default:
       return state;
   }
@@ -129,5 +141,12 @@ export const deleteToDoList = todoListId => {
   return {
     type: DELETE_TODOLIST,
     todoListId
+  };
+};
+
+export const setToDoList = todoLists => {
+  return {
+    type: SET_TODOLIST,
+    todoLists
   };
 };
