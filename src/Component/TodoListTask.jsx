@@ -54,8 +54,7 @@ class TodoListTask extends React.Component {
           />
         ) : (
           <span className={classForTask} onClick={this.activeEditMode}>
-            {this.props.task.id} - {this.props.task.title},
-            {this.props.task.priority}
+            {this.props.task.title},{this.props.task.priority}
           </span>
         )}
         <span style={{ color: "red" }} onClick={this.handleDeleteTask}>

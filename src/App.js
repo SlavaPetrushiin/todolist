@@ -4,19 +4,42 @@ import AddNewItemForm from "./Component/AddNewItemForm";
 import TodoList from "./Component/TodoList";
 import { connect } from "react-redux";
 import { addTodolist } from "./Redux/reducer";
+import axios from "axios";
+import { setToDoList } from "./Redux/reducer";
 
 class App extends React.Component {
+  componentDidMount() {
+    this.restoreState().then(response => {
+      this.props.setToDoList(response);
+    });
+  }
+
+  restoreState() {
+    //запрос всех тудулистов с сервера
+    return axios
+      .get("https://social-network.samuraijs.com/api/1.1/todo-lists", {
+        withCredentials: true,
+        headers: { "API-KEY": "4f784e15-0555-4b7d-a7c1-c9d2f74d92fa" }
+      })
+      .then(response => response.data);
+  }
+
   nextListId = 0;
 
   addToDoList = text => {
-    let newToDolist = {
-      id: this.nextListId + 1,
-      title: text,
-      tasks: [],
-      filterValue: "All"
-    };
-    this.nextListId++;
-    this.props.addTodolist(newToDolist);
+    axios
+      .post(
+        "https://social-network.samuraijs.com/api/1.1/todo-lists",
+        { title: text },
+        {
+          withCredentials: true,
+          headers: { "API-KEY": "4f784e15-0555-4b7d-a7c1-c9d2f74d92fa" }
+        }
+      )
+      .then(response => {
+        let todoList = response.data.data.item;
+        this.props.addTodolist(todoList);
+      });
   };
 
   render() {
@@ -47,7 +70,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addTodolist: newToDolist => dispatch(addTodolist(newToDolist))
+    addTodolist: newToDolist => dispatch(addTodolist(newToDolist)),
+    setToDoList: todoLists => dispatch(setToDoList(todoLists))
   };
 };
 

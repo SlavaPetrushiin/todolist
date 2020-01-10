@@ -5,54 +5,69 @@ import TodoListTasks from "./TodoListTasks";
 import TodoListTitle from "./TodoListTitle";
 import { connect } from "react-redux";
 import AddNewItemForm from "./AddNewItemForm";
+import axios from "axios";
 import {
   addTask,
   changeTask,
   filterTasks,
   deleteTask,
-  deleteToDoList
+  deleteToDoList,
+  showError,
+  setTasks
 } from "./../Redux/reducer";
 
 class ToDoList extends React.Component {
   nextTAskId = 0;
 
-  /*  componentDidMount() {
-    this.restoreState();
-  } */
-  /*   saveState = () => {
-    //сохранение стейта а локолстор
-    let stateAsString = JSON.stringify(this.state);
-    localStorage.setItem("our-state-" + this.props.id, stateAsString);
-  }; */
-  /*   restoreState = () => {
-    //стартовый стейт
-    let state = {
-      filterValue: "Completed"
-    };
-
-    let stateAsString = localStorage.getItem("our-state-" + this.props.id);
-    if (stateAsString !== null) {
-      state = JSON.parse(stateAsString);
-    }
-    this.setState(state, () => {
-      this.state.tasks.forEach(task => {
-        if (task.id >= this.nextTAskId) {
-          this.nextTAskId = task.id + 1;
-        }
+  componentDidMount() {
+    this.restoreState()
+      .then(response => {
+        let tasks = response.data.items;
+        let todoListId = this.props.id;
+        this.props.setTasks(tasks, todoListId);
+      })
+      .catch(() => {
+        this.props.showErrorMessage();
       });
-    });
-  }; */
+  }
+
+  restoreState() {
+    return axios.get(
+      `https://social-network.samuraijs.com/api/1.1/todo-lists/${this.props.id}/tasks`,
+      {
+        withCredentials: true,
+        headers: {
+          "API-KEY": "4f784e15-0555-4b7d-a7c1-c9d2f74d92fa"
+        }
+      }
+    );
+  }
 
   addTask = text => {
-    let newText = text;
-    let newTask = {
-      id: this.nextTAskId,
-      title: newText,
-      isDone: false,
-      priority: "high"
-    };
-    this.nextTAskId++;
-    this.props.addTask(newTask, this.props.id);
+    axios
+      .post(
+        `https://social-network.samuraijs.com/api/1.1/todo-lists/${this.props.id}/tasks`,
+        { title: text },
+        {
+          withCredentials: true,
+          headers: {
+            "API-KEY": "4f784e15-0555-4b7d-a7c1-c9d2f74d92fa"
+          }
+        }
+      )
+      .then(response => {
+        if (response.data.resultCode === 0) {
+          let newTask = {
+            ...response.data.data.item,
+            isDone: false,
+            priority: "high"
+          };
+          this.props.addTask(newTask, this.props.id);
+        }
+      })
+      .catch(() => {
+        this.props.showErrorMessage();
+      });
   };
 
   changeTask = (taskId, obj) => {
@@ -64,11 +79,42 @@ class ToDoList extends React.Component {
   };
 
   deleteTask = taskId => {
-    this.props.deleteTask(taskId, this.props.id);
+    axios
+      .delete(
+        `https://social-network.samuraijs.com/api/1.1/todo-lists/${this.props.id}/tasks/${taskId}`,
+        {
+          withCredentials: true,
+          headers: {
+            "API-KEY": "4f784e15-0555-4b7d-a7c1-c9d2f74d92fa"
+          }
+        }
+      )
+      .then(response => {
+        if (response.data.resultCode === 0) {
+          this.props.deleteTask(taskId, this.props.id);
+        }
+      })
+      .catch(() => {
+        this.props.showErrorMessage();
+      });
   };
 
   deleteToDoList = () => {
-    this.props.deleteToDoList(this.props.id);
+    axios
+      .delete(
+        `https://social-network.samuraijs.com/api/1.1/todo-lists/${this.props.id}`,
+        {
+          withCredentials: true,
+          headers: {
+            "API-KEY": "4f784e15-0555-4b7d-a7c1-c9d2f74d92fa"
+          }
+        }
+      )
+      .then(response => {
+        if (response.data.resultCode === 0) {
+          this.props.deleteToDoList(this.props.id);
+        }
+      });
   };
 
   render() {
@@ -85,6 +131,8 @@ class ToDoList extends React.Component {
         }
       });
     };
+
+    let errorMessage = this.props.errorMessage && "Error"; //вывожу ошибку по запросам
 
     return (
       <div className="App">
@@ -106,10 +154,17 @@ class ToDoList extends React.Component {
             filterValue={this.props.filterValue}
           />
         </div>
+        {errorMessage}
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    errorMessage: state.todoListsPage.errorMessage
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -127,10 +182,19 @@ const mapDispatchToProps = dispatch => {
     },
     deleteToDoList: todoListId => {
       dispatch(deleteToDoList(todoListId));
+    },
+    setTasks: (tasks, todoListId) => {
+      dispatch(setTasks(tasks, todoListId));
+    },
+    showErrorMessage: () => {
+      dispatch(showError());
     }
   };
 };
 
-const TodoListContainer = connect(null, mapDispatchToProps)(ToDoList);
+const TodoListContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ToDoList);
 
 export default TodoListContainer;
