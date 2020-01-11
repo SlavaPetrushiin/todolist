@@ -20,8 +20,7 @@ class TodoListTask extends React.Component {
     let isDone = event.currentTarget.checked;
     this.props.changeTask(
       this.props.task.id, //id таски
-      { isDone: isDone },
-      this.props.todoListId //id листа
+      { isDone: isDone }
     );
   };
 

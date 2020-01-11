@@ -71,11 +71,38 @@ class ToDoList extends React.Component {
   };
 
   changeTask = (taskId, obj) => {
-    this.props.changeTask(taskId, obj, this.props.id);
+    let todoListId = this.props.id;
+    let changeUserTask = this.props.tasks.find(task => task.id === taskId);
+    let updateTask = {
+      title: changeUserTask.title,
+      description: changeUserTask.description,
+      completed: changeUserTask.completed,
+      status: changeUserTask.status,
+      priority: changeUserTask.priority,
+      startDate: changeUserTask.startDate,
+      deadline: changeUserTask.deadline,
+      ...obj
+    };
+
+    axios
+      .put(
+        `https://social-network.samuraijs.com/api/1.1/todo-lists/${todoListId}/tasks/${taskId}`,
+        updateTask,
+        {
+          withCredentials: true,
+          headers: {
+            "API-KEY": "4f784e15-0555-4b7d-a7c1-c9d2f74d92fa"
+          }
+        }
+      )
+      .then(response => {
+        this.props.changeTask(taskId, obj, todoListId); //мне не нравиться, что пришла вся таска, а отдаем obj
+      });
   };
 
   changeFilter = newFilterValue => {
-    this.props.filterTasks(newFilterValue, this.props.id);
+    let todoListId = this.props.id;
+    this.props.filterTasks(newFilterValue, todoListId);
   };
 
   deleteTask = taskId => {
