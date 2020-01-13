@@ -44,12 +44,12 @@ export const toDoListReducer = (state = initialState, action) => {
       return {
         ...state,
         todoLists: state.todoLists.map(todoList => {
-          if (todoList.id === action.todoListId) {
+          if (todoList.id === action.updatedTask.todoListId) {
             return {
               ...todoList, //	1 ищем совпадение листа
               tasks: todoList.tasks.map(task => {
-                if (task.id === action.taskId) {
-                  return { ...task, ...action.obj };
+                if (task.id === action.updatedTask.id) {
+                  return { ...task, ...action.updatedTask };
                 } else {
                   return task;
                 }
@@ -139,12 +139,10 @@ export const addTask = (newTask, todoListId) => {
   };
 };
 
-export const changeTask = (taskId, obj, todoListId) => {
+export const changeTask = updatedTask => {
   return {
     type: CHANGE_TASK,
-    taskId,
-    obj, //объект с title
-    todoListId
+    updatedTask
   };
 };
 

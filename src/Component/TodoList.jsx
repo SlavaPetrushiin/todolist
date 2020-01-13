@@ -96,7 +96,9 @@ class ToDoList extends React.Component {
         }
       )
       .then(response => {
-        this.props.changeTask(taskId, obj, todoListId); //мне не нравиться, что пришла вся таска, а отдаем obj
+        debugger;
+        let updatedTask = response.data.data.item;
+        this.props.changeTask(updatedTask); //мне не нравиться, что пришла вся таска, а отдаем obj
       });
   };
 
@@ -198,8 +200,8 @@ const mapDispatchToProps = dispatch => {
     addTask: (newTask, todoListId) => {
       dispatch(addTask(newTask, todoListId));
     },
-    changeTask: (taskId, obj, todoListId) => {
-      dispatch(changeTask(taskId, obj, todoListId));
+    changeTask: updatedTask => {
+      dispatch(changeTask(updatedTask));
     },
     filterTasks: (newFilterValue, todoListId) => {
       dispatch(filterTasks(newFilterValue, todoListId));

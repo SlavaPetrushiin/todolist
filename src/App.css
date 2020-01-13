@@ -33,8 +33,9 @@ h4 {
   border-color: red;
 }
 
-.todoList-task.done {
+.todoList-task .done {
   opacity: 0.5;
+  text-decoration: line-through;
 }
 
 .todoList {

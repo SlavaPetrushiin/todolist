@@ -17,10 +17,10 @@ class TodoListTask extends React.Component {
 
   //изменение чекбокса
   onIsDoneChanged = event => {
-    let isDone = event.currentTarget.checked;
+    let status = event.currentTarget.checked ? 2 : 0;
     this.props.changeTask(
       this.props.task.id, //id таски
-      { isDone: isDone }
+      { status }
     );
   };
 
@@ -34,12 +34,13 @@ class TodoListTask extends React.Component {
   };
 
   render = () => {
-    let classForTask = this.props.task.isDone ? "todoList-task done" : "";
+    let status = this.props.task.status === 2 ? true : false;
+    let classForTask = status ? "done" : "";
     return (
       <div className="todoList-task">
         <input
           type="checkbox"
-          checked={this.props.task.isDone}
+          checked={status}
           onChange={this.onIsDoneChanged}
           className={classForTask}
         />

@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://SlavaPetrushiin.github.io/todolist",
   "dependencies": {
+    "axios": "^0.19.1",
     "gh-pages": "^2.1.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
