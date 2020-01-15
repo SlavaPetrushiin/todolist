@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { addTodolist } from "./Redux/reducer";
 import axios from "axios";
 import { setToDoList } from "./Redux/reducer";
+import { api } from "./Dal/api";
 
 class App extends React.Component {
   componentDidMount() {
@@ -16,26 +17,12 @@ class App extends React.Component {
 
   restoreState() {
     //запрос всех тудулистов с сервера
-    return axios
-      .get("https://social-network.samuraijs.com/api/1.1/todo-lists", {
-        withCredentials: true,
-        headers: { "API-KEY": "4f784e15-0555-4b7d-a7c1-c9d2f74d92fa" }
-      })
-      .then(response => response.data);
+    return api.getToDoLists().then(response => {
+      return response.data});
   }
 
-  nextListId = 0;
-
-  addToDoList = text => {
-    axios
-      .post(
-        "https://social-network.samuraijs.com/api/1.1/todo-lists",
-        { title: text },
-        {
-          withCredentials: true,
-          headers: { "API-KEY": "4f784e15-0555-4b7d-a7c1-c9d2f74d92fa" }
-        }
-      )
+  addToDoList = title => {
+    api.createToDoList(title)
       .then(response => {
         let todoList = response.data.data.item;
         this.props.addTodolist(todoList);
