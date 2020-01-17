@@ -41,10 +41,9 @@ class ToDoList extends React.Component {
       .createTask(newTitleTask, todoListId)
       .then(response => {
         if (response.data.resultCode === 0) {
+          debugger
           let newTask = {
-            ...response.data.data.item,
-            isDone: false,
-            priority: "high"
+            ...response.data.data.item
           };
           this.props.addTask(newTask, todoListId);
         }

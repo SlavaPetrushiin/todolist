@@ -36,8 +36,29 @@ class TodoListTask extends React.Component {
   };
 
   render = () => {
+
     let status = this.props.task.status === 2 ? true : false;
     let classForTask = status ? "done" : "";
+    let priority;
+    debugger
+    switch (this.props.task.priority) {
+      case 0:
+        priority = "Low";
+        break;
+      case 1:
+        priority = "Middle";
+        break;
+      case 2:
+        priority = "Hi";
+        break;
+      case 3:
+        priority = "Urgently";
+        break;
+      case 4:
+        priority = "Later";
+        break;
+    }
+
     return (
       <div className="todoList-task">
         <input
@@ -56,7 +77,7 @@ class TodoListTask extends React.Component {
           />
         ) : (
           <span className={classForTask} onClick={this.activeEditMode}>
-            {this.state.title},{this.props.task.priority}
+            {this.state.title},{priority}
           </span>
         )}
         <span style={{ color: "red" }} onClick={this.handleDeleteTask}>
