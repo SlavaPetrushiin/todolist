@@ -7,6 +7,7 @@ export const DELETE_TODOLIST = "TodoList/Reducer/DELETE-TODOLIST";
 export const SET_TODOLIST = "TodoList/Reducer/SET-TODOLIST";
 export const SET_TASKS = "TodoList/Reducer/SET-TASKS";
 export const ERROR = "TodoList/Reducer/ERROR";
+export const CHANGE_TITLE_LIST = "TodoList/Reducer/CHANGE_TITLE_LIST";
 
 const initialState = {
   todoLists: [],
@@ -28,6 +29,19 @@ export const toDoListReducer = (state = initialState, action) => {
           ...state.todoLists,
           { ...action.newToDolist, tasks: [], filterValue: "All" }
         ]
+      };
+
+    case CHANGE_TITLE_LIST:
+      return {
+        ...state,
+        todoLists: state.todoLists.map(todoList => {
+          if (todoList.id === action.todoListId) {
+            debugger;
+            return { ...todoList, title: action.newTtitle };
+          } else {
+            return todoList;
+          }
+        })
       };
     case ADD_TASK: //Добавление новых тасок в лист
       return {
@@ -179,6 +193,12 @@ export const setToDoList = todoLists => {
 export const setTasks = (tasks, todoListId) => ({
   type: SET_TASKS,
   tasks,
+  todoListId
+});
+
+export const changeTitleList = (newTtitle, todoListId) => ({
+  type: CHANGE_TITLE_LIST,
+  newTtitle,
   todoListId
 });
 

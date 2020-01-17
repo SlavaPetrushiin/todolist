@@ -4,7 +4,6 @@ import AddNewItemForm from "./Component/AddNewItemForm";
 import TodoList from "./Component/TodoList";
 import { connect } from "react-redux";
 import { addTodolist } from "./Redux/reducer";
-import axios from "axios";
 import { setToDoList } from "./Redux/reducer";
 import { api } from "./Dal/api";
 
@@ -18,15 +17,15 @@ class App extends React.Component {
   restoreState() {
     //запрос всех тудулистов с сервера
     return api.getToDoLists().then(response => {
-      return response.data});
+      return response.data;
+    });
   }
 
   addToDoList = title => {
-    api.createToDoList(title)
-      .then(response => {
-        let todoList = response.data.data.item;
-        this.props.addTodolist(todoList);
-      });
+    api.createToDoList(title).then(response => {
+      let todoList = response.data.data.item;
+      this.props.addTodolist(todoList);
+    });
   };
 
   render() {

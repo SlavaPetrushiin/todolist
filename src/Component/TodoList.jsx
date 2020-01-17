@@ -5,7 +5,6 @@ import TodoListTasks from "./TodoListTasks";
 import TodoListTitle from "./TodoListTitle";
 import { connect } from "react-redux";
 import AddNewItemForm from "./AddNewItemForm";
-import axios from "axios";
 import { api } from "./../Dal/api";
 import {
   addTask,
@@ -14,11 +13,11 @@ import {
   deleteTask,
   deleteToDoList,
   showError,
-  setTasks
+  setTasks,
+  changeTitleList
 } from "./../Redux/reducer";
 
 class ToDoList extends React.Component {
-
   componentDidMount() {
     this.restoreState()
       .then(response => {
@@ -38,10 +37,10 @@ class ToDoList extends React.Component {
 
   addTask = newTitleTask => {
     let todoListId = this.props.id;
-    api.createTask(newTitleTask, todoListId)
+    api
+      .createTask(newTitleTask, todoListId)
       .then(response => {
         if (response.data.resultCode === 0) {
-          debugger
           let newTask = {
             ...response.data.data.item,
             isDone: false,
@@ -69,12 +68,10 @@ class ToDoList extends React.Component {
       ...obj
     };
 
-    api.updateTask(updateTask, taskId, todoListId)
-      .then(response => {
-        debugger
-        let updatedTask = response.data.data.item;
-        this.props.changeTask(updatedTask); //мне не нравиться, что пришла вся таска, а отдаем obj
-      });
+    api.updateTask(updateTask, taskId, todoListId).then(response => {
+      let updatedTask = response.data.data.item;
+      this.props.changeTask(updatedTask); //мне не нравиться, что пришла вся таска, а отдаем obj
+    });
   };
 
   changeFilter = newFilterValue => {
@@ -84,7 +81,8 @@ class ToDoList extends React.Component {
 
   deleteTask = taskId => {
     let todoListId = this.props.id;
-    api.deleteTask(taskId, todoListId)
+    api
+      .deleteTask(taskId, todoListId)
       .then(response => {
         if (response.data.resultCode === 0) {
           this.props.deleteTask(taskId, this.props.id);
@@ -97,12 +95,18 @@ class ToDoList extends React.Component {
 
   deleteToDoList = () => {
     let todoListId = this.props.id;
-    api.deleteToDoList(todoListId)
-      .then(response => {
-        if (response.data.resultCode === 0) {
-          this.props.deleteToDoList(this.props.id);
-        }
-      });
+    api.deleteToDoList(todoListId).then(response => {
+      if (response.data.resultCode === 0) {
+        this.props.deleteToDoList(this.props.id);
+      }
+    });
+  };
+
+  changeTitleList = ({ title }) => {
+    let todoListId = this.props.id;
+    api.updateTitleToDoList(title, todoListId).then(response => {
+      this.props.changeTitleList(title, todoListId);
+    });
   };
 
   render() {
@@ -128,7 +132,9 @@ class ToDoList extends React.Component {
           <header className="header">
             <TodoListTitle
               title={this.props.title}
+              todoListId={this.props.id}
               deleteToDoList={this.deleteToDoList}
+              changeTitleList={this.changeTitleList}
             />
             <AddNewItemForm addItem={this.addTask} />
           </header>
@@ -176,6 +182,9 @@ const mapDispatchToProps = dispatch => {
     },
     showErrorMessage: () => {
       dispatch(showError());
+    },
+    changeTitleList: (newTitle, todoListId) => {
+      dispatch(changeTitleList(newTitle, todoListId));
     }
   };
 };

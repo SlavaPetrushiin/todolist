@@ -30,7 +30,6 @@ class TodoListTask extends React.Component {
   onTitleChanged = event => {
     let title = event.currentTarget.value;
     this.setState({ title });
-    //this.props.changeTask(this.props.task.id, { title: title });
   };
   handleDeleteTask = event => {
     this.props.deleteTask(this.props.task.id);
