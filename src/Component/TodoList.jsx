@@ -66,9 +66,10 @@ class ToDoList extends React.Component {
       deadline: changeUserTask.deadline,
       ...obj
     };
-
+  debugger
     api.updateTask(updateTask, taskId, todoListId).then(response => {
       let updatedTask = response.data.data.item;
+      debugger
       this.props.changeTask(updatedTask); //мне не нравиться, что пришла вся таска, а отдаем obj
     });
   };

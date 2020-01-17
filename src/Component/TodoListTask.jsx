@@ -35,12 +35,37 @@ class TodoListTask extends React.Component {
     this.props.deleteTask(this.props.task.id);
   };
 
+  handleChangeSelect = event =>{
+    let priority;
+    switch (event.target.value) {
+      case "Low":
+        priority = 0;
+        break;
+      case "Middle":
+        priority = 1;
+        break;
+      case "Hi":
+        priority = 2;
+        break;
+      case "Urgently":
+        priority = 3;
+        break;
+      case "Later":
+        priority = 4;
+        break;
+    }
+    let status = event.currentTarget.checked ? 2 : 0;
+    this.props.changeTask(
+        this.props.task.id, //id таски
+        { priority }
+    );
+  }
+
   render = () => {
 
     let status = this.props.task.status === 2 ? true : false;
     let classForTask = status ? "done" : "";
     let priority;
-    debugger
     switch (this.props.task.priority) {
       case 0:
         priority = "Low";
@@ -76,13 +101,23 @@ class TodoListTask extends React.Component {
             onChange={this.onTitleChanged}
           />
         ) : (
-          <span className={classForTask} onClick={this.activeEditMode}>
-            {this.state.title},{priority}
-          </span>
+            <div>
+              <span className={classForTask} onClick={this.activeEditMode}>
+                {this.state.title},{priority}
+              </span>
+              <select value={priority} onChange={this.handleChangeSelect} >
+                <option value="Low">Low</option>
+                <option value="Middle">Middle</option>
+                <option selected value="Hi">Hi</option>
+                <option value="Urgently">Urgently</option>
+                <option value="Later">Later</option>
+              </select>
+              <span style={{ color: "red" }} onClick={this.handleDeleteTask}>
+                &#10008;
+              </span>
+            </div>
         )}
-        <span style={{ color: "red" }} onClick={this.handleDeleteTask}>
-          &#10008;
-        </span>
+
       </div>
     );
   };
