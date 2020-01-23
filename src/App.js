@@ -3,29 +3,16 @@ import "./App.css";
 import AddNewItemForm from "./Component/AddNewItemForm";
 import TodoList from "./Component/TodoList";
 import { connect } from "react-redux";
-import { addTodolist } from "./Redux/reducer";
-import { setToDoList } from "./Redux/reducer";
-import { api } from "./Dal/api";
+import { createToDoListThunkCreator, getToDolistThunkCreator} from "./Redux/reducer";
+
 
 class App extends React.Component {
   componentDidMount() {
-    this.restoreState().then(response => {
-      this.props.setToDoList(response);
-    });
-  }
-
-  restoreState() {
-    //запрос всех тудулистов с сервера
-    return api.getToDoLists().then(response => {
-      return response.data;
-    });
+    this.props.getToDolistThunkCreator()
   }
 
   addToDoList = title => {
-    api.createToDoList(title).then(response => {
-      let todoList = response.data.data.item;
-      this.props.addTodolist(todoList);
-    });
+    this.props.createToDoListThunkCreator(title)
   };
 
   render() {
@@ -56,8 +43,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addTodolist: newToDolist => dispatch(addTodolist(newToDolist)),
-    setToDoList: todoLists => dispatch(setToDoList(todoLists))
+    getToDolistThunkCreator : () => dispatch(getToDolistThunkCreator()),
+    createToDoListThunkCreator: (title) => dispatch(createToDoListThunkCreator(title))
   };
 };
 

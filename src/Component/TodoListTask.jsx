@@ -55,6 +55,7 @@ class TodoListTask extends React.Component {
         break;
     }
     let status = event.currentTarget.checked ? 2 : 0;
+    debugger
     this.props.changeTask(
         this.props.task.id, //id таски
         { priority }
