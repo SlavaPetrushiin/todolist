@@ -1,29 +1,46 @@
 import {api} from "../Dal/api";
+import {Dispatch} from "redux";
+import {
+    allActionTypes,
+    ADD_TASK,
+    ADD_TODOLIST,
+    CHANGE_TASK,
+    CHANGE_TITLE_LIST,
+    DELETE_TASK,
+    DELETE_TODOLIST,
+    FILTER_TASK,
+    SET_TASKS,
+    SET_TODOLIST,
+    IAddTodolist,
+    IAddTask,
+    IChangeTask,
+    IFilterTasks,
+    IDeleteTask,
+    IDeleteToDoList,
+    ISetToDoList,
+    ISetTasks, IChangeTitleList, ERROR
+} from "../types/actions";
+import {ITask, ITodoList} from "./interfaces";
 
-export const ADD_TODOLIST = "TodoList/Reducer/ADD-TODOLIST";
-export const ADD_TASK = "TodoList/Reducer/ADD-TASK";
-export const CHANGE_TASK = "TodoList/Reducer/CHANGE-TASK";
-export const FILTER_TASK = "TodoList/Reducer/FILTER-TASK";
-export const DELETE_TASK = "TodoList/Reducer/DELETE-TASK";
-export const DELETE_TODOLIST = "TodoList/Reducer/DELETE-TODOLIST";
-export const SET_TODOLIST = "TodoList/Reducer/SET-TODOLIST";
-export const SET_TASKS = "TodoList/Reducer/SET-TASKS";
-export const ERROR = "TodoList/Reducer/ERROR";
-export const CHANGE_TITLE_LIST = "TodoList/Reducer/CHANGE_TITLE_LIST";
 
 
-const initialState = {
+interface IState {
+    todoLists : Array<ITodoList>;
+    errorMessage : boolean;
+}
+
+const initialState : IState = {
     todoLists: [],
     errorMessage: false
 };
 
-export const toDoListReducer = (state = initialState, action) => {
+export const toDoListReducer = (state = initialState, action : allActionTypes) => {
     switch (action.type) {
-        case ERROR:
-            return {
-                ...state,
-                errorMessage: true
-            };
+        // case ERROR:
+        //     return {
+        //         ...state,
+        //         errorMessage: true
+        //     };
 
         case ADD_TODOLIST:
             return {
@@ -37,10 +54,10 @@ export const toDoListReducer = (state = initialState, action) => {
         case CHANGE_TITLE_LIST:
             return {
                 ...state,
-                todoLists: state.todoLists.map(todoList => {
+                todoLists: state.todoLists.map((todoList :ITodoList) => {
                     if (todoList.id === action.todoListId) {
                         debugger;
-                        return {...todoList, title: action.newTtitle};
+                        return {...todoList, title: action.newTitle};
                     } else {
                         return todoList;
                     }
@@ -49,7 +66,7 @@ export const toDoListReducer = (state = initialState, action) => {
         case ADD_TASK: //Добавление новых тасок в лист
             return {
                 ...state,
-                todoLists: state.todoLists.map(todoList => {
+                todoLists: state.todoLists.map((todoList :ITodoList) => {
                     if (todoList.id === action.todoListId) {
                         return {...todoList, tasks: [...todoList.tasks, action.newTask]};
                     } else {
@@ -61,11 +78,11 @@ export const toDoListReducer = (state = initialState, action) => {
             debugger
             return {
                 ...state,
-                todoLists: state.todoLists.map(todoList => {
+                todoLists: state.todoLists.map((todoList :ITodoList) => {
                     if (todoList.id === action.updatedTask.todoListId) {
                         return {
                             ...todoList, //	1 ищем совпадение листа
-                            tasks: todoList.tasks.map(task => {
+                            tasks: todoList.tasks.map((task: any) => {
                                 if (task.id === action.updatedTask.id) {
                                     return {...task, ...action.updatedTask};
                                 } else {
@@ -81,7 +98,7 @@ export const toDoListReducer = (state = initialState, action) => {
         case FILTER_TASK:
             return {
                 ...state,
-                todoLists: state.todoLists.map(todoList => {
+                todoLists: state.todoLists.map((todoList :ITodoList) => {
                     if (todoList.id === action.todoListId) {
                         return {...todoList, filterValue: action.newFilterValue};
                     } else {
@@ -92,11 +109,11 @@ export const toDoListReducer = (state = initialState, action) => {
         case DELETE_TASK:
             return {
                 ...state,
-                todoLists: state.todoLists.map(todoList => {
+                todoLists: state.todoLists.map((todoList :ITodoList) => {
                     if (todoList.id === action.todoListId) {
                         return {
                             ...todoList, //	1 ищем совпадение листа
-                            tasks: todoList.tasks.filter(task => {
+                            tasks: todoList.tasks.filter((task : any) => {
                                 return task.id !== action.taskId;
                             })
                         };
@@ -111,7 +128,7 @@ export const toDoListReducer = (state = initialState, action) => {
                 todoLists: state.todoLists.filter(list => list.id !== action.todoListId)
             };
         case SET_TODOLIST:
-            let todoLists = action.todoLists.map(todoList => {
+            let todoLists = action.todoLists.map((todoList :ITodoList) => {
                 return {
                     ...todoList,
                     tasks: [],
@@ -125,7 +142,7 @@ export const toDoListReducer = (state = initialState, action) => {
         case SET_TASKS:
             return {
                 ...state,
-                todoLists: state.todoLists.map(todoList => {
+                todoLists: state.todoLists.map((todoList :ITodoList) => {
                     if (todoList.id === action.todoListId) {
                         return {
                             ...todoList,
@@ -142,114 +159,59 @@ export const toDoListReducer = (state = initialState, action) => {
 };
 
 //ActionCreater
-export const addTodolist = newToDolist => {
-    return {
-        type: ADD_TODOLIST,
-        newToDolist: newToDolist
-    };
-};
-
-export const addTask = (newTask, todoListId) => {
-    return {
-        type: ADD_TASK,
-        newTask,
-        todoListId
-    };
-};
-
-export const changeTask = updatedTask => {
-    debugger
-    return {
-        type: CHANGE_TASK,
-        updatedTask
-    };
-};
-
-export const filterTasks = (newFilterValue, todoListId) => {
-    return {
-        type: FILTER_TASK,
-        newFilterValue,
-        todoListId
-    };
-};
-
-export const deleteTask = (taskId, todoListId) => {
-    return {
-        type: DELETE_TASK,
-        taskId,
-        todoListId
-    };
-};
-
-export const deleteToDoList = todoListId => {
-    return {
-        type: DELETE_TODOLIST,
-        todoListId
-    };
-};
-
-export const setToDoList = todoLists => {
-    return {
-        type: SET_TODOLIST,
-        todoLists
-    };
-};
-
-export const setTasks = (tasks, todoListId) => ({
-    type: SET_TASKS,
-    tasks,
-    todoListId
-});
-
-export const changeTitleList = (newTtitle, todoListId) => ({
-    type: CHANGE_TITLE_LIST,
-    newTtitle,
-    todoListId
-});
+export const addTodolist = (newToDolist : ITodoList) : IAddTodolist => ({type: ADD_TODOLIST, newToDolist});
+export const addTask = (newTask : ITask, todoListId : string ) : IAddTask  => ({type: ADD_TASK, newTask, todoListId});
+export const changeTask = (updatedTask : ITask) : IChangeTask => ({type: CHANGE_TASK, updatedTask});
+export const filterTasks = (newFilterValue : string, todoListId : string) : IFilterTasks => ({type: FILTER_TASK, newFilterValue, todoListId});
+export const deleteTask = (taskId : string, todoListId : string) : IDeleteTask => ({type: DELETE_TASK, taskId, todoListId});
+export const deleteToDoList = (todoListId : string) : IDeleteToDoList => ({type: DELETE_TODOLIST, todoListId});
+export const setToDoList = (todoLists : Array<ITodoList>) : ISetToDoList => ({type: SET_TODOLIST, todoLists});
+export const setTasks = (tasks : Array<ITask>, todoListId : string) : ISetTasks => ({type: SET_TASKS, tasks, todoListId});
+export const changeTitleList = (newTitle : string, todoListId : string) : IChangeTitleList => ({type: CHANGE_TITLE_LIST, newTitle, todoListId});
 
 
 //thunk
-export const getToDolistThunkCreator = () => (dispatch) => {
-    api.getToDoLists().then(response => {
+export const getToDolistThunkCreator : Function = () : Function => (dispatch : Dispatch) : void => {
+    api.getToDoLists().then((response : any) => {
+        debugger
         return response.data;
-    }).then(response => {
+    }).then((response : any) => {
         dispatch(setToDoList(response));
     });
 }
 
-export const createToDoListThunkCreator = (title) => (dispatch) => {
-    api.createToDoList(title).then(response => {
+export const createToDoListThunkCreator : Function = (title : string) : Function => (dispatch : Dispatch) : void => {
+    api.createToDoList(title).then((response : any) => {
         let todoList = response.data.data.item;
         dispatch(addTodolist(todoList));
     });
 };
 
-export const deleteToDoListThunkCreator = (todoListId) => (dispatch) => {
-    api.deleteToDoList(todoListId).then(response => {
+export const deleteToDoListThunkCreator : Function = (todoListId : string) : Function => (dispatch : Dispatch) : void => {
+    api.deleteToDoList(todoListId).then((response : any) => {
         if (response.data.resultCode === 0) {
             dispatch(deleteToDoList(todoListId));
         }
     });
 };
 
-export const updateTitleToDoListThunkCreator = (title, todoListId) => (dispatch) => {
-    api.updateTitleToDoList(title, todoListId).then(response => {
+export const updateTitleToDoListThunkCreator : Function = (title : string, todoListId : string) : Function => (dispatch : Dispatch) : void => {
+    api.updateTitleToDoList(title, todoListId).then((response: any) => {
         dispatch(changeTitleList(title, todoListId));
     });
 };
 
-export const getTasksThunkCreator = (todoListId) => (dispatch) => {
+export const getTasksThunkCreator : Function = (todoListId : string) : Function => (dispatch : Dispatch) : void => {
   api.getTasks(todoListId)
-      .then(response => {
+      .then((response : any) => {
         let tasks = response.data.items;
         dispatch(setTasks(tasks, todoListId));
       })
 };
 
-export const createTaskThunkCreator = (newTitleTask, todoListId) => (dispatch) => {
-  api
-      .createTask(newTitleTask, todoListId)
-      .then(response => {
+export const createTaskThunkCreator : Function = (newTitleTask : string, todoListId : string) : Function => (dispatch : Dispatch) : void => {
+  api.createTask(newTitleTask, todoListId)
+      .then((response : any)  => {
         if (response.data.resultCode === 0) {
           let newTask = {
             ...response.data.data.item
@@ -259,19 +221,18 @@ export const createTaskThunkCreator = (newTitleTask, todoListId) => (dispatch) =
       })
 };
 
-export const deleteTaskThunkCreator = (taskId, todoListId) => (dispatch) => {
-  api
-      .deleteTask(taskId, todoListId)
-      .then(response => {
+export const deleteTaskThunkCreator : Function = (taskId : string, todoListId : string) : Function => (dispatch : Dispatch) : void => {
+  api.deleteTask(taskId, todoListId)
+      .then((response : any) => {
         if (response.data.resultCode === 0) {
           dispatch(deleteTask(taskId, todoListId));
         }
       })
 };
 
-export const updateTaskThunkCreator = (updateTask, taskId, todoListId) => (dispatch) => {
+export const updateTaskThunkCreator : Function = (updateTask : any, taskId : string, todoListId : string) : Function => (dispatch : Dispatch)  : void=> {
   api.updateTask(updateTask, taskId, todoListId)
-      .then(response => {
+      .then((response : any) => {
         dispatch(changeTask(response.data.data.item)); //мне не нравиться, что пришла вся таска, а отдаем obj
       })
 }
@@ -279,4 +240,3 @@ export const updateTaskThunkCreator = (updateTask, taskId, todoListId) => (dispa
 export const showError = () => ({type: ERROR});
 
 
-//deleteTask(taskId, todoListId)

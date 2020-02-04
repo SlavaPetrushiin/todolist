@@ -5,18 +5,17 @@ import TodoList from "./Component/TodoList";
 import { connect } from "react-redux";
 import { createToDoListThunkCreator, getToDolistThunkCreator} from "./Redux/reducer";
 
-
-class App extends React.Component {
+class App extends React.Component<any> {
   componentDidMount() {
     this.props.getToDolistThunkCreator()
   }
 
-  addToDoList = title => {
+  addToDoList = (title : string) => {
     this.props.createToDoListThunkCreator(title)
   };
 
   render() {
-    let todoLists = this.props.todoLists.map(list => (
+    let todoLists = this.props.todoLists.map((list: any) => (
       <TodoList
         id={list.id}
         title={list.title}
@@ -35,16 +34,16 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state : any) => {
   return {
     todoLists: state.todoListsPage.todoLists
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch : any) => {
   return {
     getToDolistThunkCreator : () => dispatch(getToDolistThunkCreator()),
-    createToDoListThunkCreator: (title) => dispatch(createToDoListThunkCreator(title))
+    createToDoListThunkCreator: (title : string) => dispatch(createToDoListThunkCreator(title))
   };
 };
 

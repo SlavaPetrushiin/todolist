@@ -12,21 +12,39 @@ import {
     getTasksThunkCreator, updateTaskThunkCreator,
     updateTitleToDoListThunkCreator
 } from "../Redux/reducer";
+import {Dispatch} from "redux";
 
-class ToDoList extends React.Component {
+interface IProps {
+    id : string;
+    title : string;
+    key : string;
+    tasks : any[];
+    filterValue : string;
+    filterTasks : Function;
+    showErrorMessage : Function;
+    deleteToDoListThunkCreator : Function;
+    updateTitleToDoListThunkCreator : Function;
+    getTasksThunkCreator : Function;
+    createTaskThunkCreator : Function;
+    deleteTaskThunkCreator : Function;
+    updateTaskThunkCreator : Function;
+    errorMessage : string
+};
+
+class ToDoList extends React.Component<IProps> {
     componentDidMount() {
         let todoListId = this.props.id;
         this.props.getTasksThunkCreator(todoListId);
     }
 
-    addTask = newTitleTask => {
+    addTask = (newTitleTask : string) => {
         let todoListId = this.props.id;
         this.props.createTaskThunkCreator(newTitleTask, todoListId)
     };
 
-    changeTask = (taskId, obj) => {
+    changeTask = (taskId : string, obj : any) => {
         let todoListId = this.props.id;
-        let changeUserTask = this.props.tasks.find(task => task.id === taskId);
+        let changeUserTask = this.props.tasks.find((task: any) => task.id === taskId);
         let updateTask = {
             ...changeUserTask,
             ...obj
@@ -34,12 +52,12 @@ class ToDoList extends React.Component {
         this.props.updateTaskThunkCreator(updateTask, taskId, todoListId);
     };
 
-    changeFilter = newFilterValue => {
+    changeFilter = (newFilterValue : string) => {
         let todoListId = this.props.id;
         this.props.filterTasks(newFilterValue, todoListId);
     };
 
-    deleteTask = taskId => {
+    deleteTask = (taskId : string) => {
         let todoListId = this.props.id;
         this.props.deleteTaskThunkCreator(taskId, todoListId);
     };
@@ -49,14 +67,14 @@ class ToDoList extends React.Component {
         this.props.deleteToDoListThunkCreator(todoListId);
     };
 
-    changeTitleList = ({title}) => {
+    changeTitleList = ({title} : any) => {
         let todoListId = this.props.id;
         this.props.updateTitleToDoListThunkCreator(title, todoListId);
     };
 
     render() {
-        const getFilterTasks = (tasks, filter) => {
-            return tasks.filter(task => {
+        const getFilterTasks = (tasks : any, filter : string) => {
+            return tasks.filter((task : any) => {
                 // eslint-disable-next-line default-case
                 switch (filter) {
                     case "All":
@@ -77,7 +95,6 @@ class ToDoList extends React.Component {
                     <header className="header">
                         <TodoListTitle
                             title={this.props.title}
-                            todoListId={this.props.id}
                             deleteToDoList={this.deleteToDoList}
                             changeTitleList={this.changeTitleList}
                         />
@@ -99,13 +116,26 @@ class ToDoList extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state : any) => {
     return {
         errorMessage: state.todoListsPage.errorMessage
     };
 };
 
-const mapDispatchToProps = dispatch => {
+
+interface IMapDispatchToProps  {
+    filterTasks : (newFilterValue : string, todoListId : string) => void;
+    showErrorMessage : () => void;
+    deleteToDoListThunkCreator : (todoListId : string) => void;
+    updateTitleToDoListThunkCreator : (newTitle : string, todoListId : string) => void;
+    getTasksThunkCreator : (todoListId : string) => void;
+    createTaskThunkCreator : (newTask : any, todoListId : string) => void;
+    deleteTaskThunkCreator : (taskId : any, todoListId : string) => void;
+    updateTaskThunkCreator : (updatedTask : any, taskId : string, todoListId : string) => void;
+}
+
+
+const mapDispatchToProps = (dispatch : Dispatch) : IMapDispatchToProps => {//Не забудь проработать!!!!!
     return {
         filterTasks: (newFilterValue, todoListId) => {
             dispatch(filterTasks(newFilterValue, todoListId));
@@ -119,7 +149,7 @@ const mapDispatchToProps = dispatch => {
         updateTitleToDoListThunkCreator: (newTitle, todoListId) => {
             dispatch(updateTitleToDoListThunkCreator(newTitle, todoListId))
         },
-        getTasksThunkCreator: (todoListId) => {
+        getTasksThunkCreator: (todoListId ) => {
             dispatch(getTasksThunkCreator(todoListId));
         },
         createTaskThunkCreator: (newTask, todoListId) => {

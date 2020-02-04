@@ -1,4 +1,5 @@
-import axios from "axios";
+import {ITask} from "../Redux/interfaces";
+const axios = require('axios');
 
 const instance = axios.create({
   baseURL: "https://social-network.samuraijs.com/api/1.1/todo-lists",
@@ -11,31 +12,31 @@ export const api = {
     return instance.get();
   },
 
-  createToDoList(text) {
+  createToDoList(text : string) {
     return instance.post("", { title: text });
   },
 
-  deleteToDoList(todoListId) {
+  deleteToDoList(todoListId : string) {
     return instance.delete(`/${todoListId}`);
   },
 
-  updateTitleToDoList(newTitle, todoListId) {
+  updateTitleToDoList(newTitle : string, todoListId : string) {
     return instance.put(`/${todoListId}`, { title: newTitle });
   },
 
-  getTasks(todoListId) {
+  getTasks(todoListId : string) {
     return instance.get(`/${todoListId}/tasks`);
   },
 
-  createTask(newTitleTask, todoListId) {
+  createTask(newTitleTask : string, todoListId : string) {
     return instance.post(`/${todoListId}/tasks`, { title: newTitleTask });
   },
 
-  deleteTask(taskId, todoListId) {
+  deleteTask(taskId : string, todoListId : string) {
     return instance.delete(`/${todoListId}/tasks/${taskId}`);
   },
 
-  updateTask(updateTask, taskId, todoListId) {
+  updateTask(updateTask : ITask, taskId : string, todoListId : string) {
     return instance.put(`/${todoListId}/tasks/${taskId}`, updateTask);
   }
 };

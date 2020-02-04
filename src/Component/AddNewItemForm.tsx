@@ -1,6 +1,15 @@
 import React from "react";
 
-class AddNewItemForm extends React.Component {
+interface IProps {
+  addItem : Function;
+}
+
+interface IState {
+  error: boolean;
+  title: string;
+}
+
+class AddNewItemForm extends React.Component<IProps, IState> {
   state = {
     error: false,
     title: ""
@@ -17,12 +26,12 @@ class AddNewItemForm extends React.Component {
     }
   };
 
-  handleClick = event => {
+  handleClick = (event : React.ChangeEvent<HTMLInputElement>) => {
     let word = event.target.value.trimLeft();
     this.setState({ error: false, title: word });
   };
 
-  handleEnter = event => {
+  handleEnter = (event : React.KeyboardEvent) => {
     if (event.key === "Enter") {
       this.onAddItemClick();
     }

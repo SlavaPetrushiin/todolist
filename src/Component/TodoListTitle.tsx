@@ -1,8 +1,19 @@
 import React from "react";
 
-class TodoListTitle extends React.Component {
+interface IProps{
+  title : string;
+  deleteToDoList : Function;
+  changeTitleList : Function;
+}
+
+interface IState{
+  addMode: boolean;
+  title: string;
+}
+
+class TodoListTitle extends React.Component<IProps, IState> {
   state = {
-    aditMode: false,
+    addMode: false,
     title: this.props.title
   };
 
@@ -10,14 +21,14 @@ class TodoListTitle extends React.Component {
     this.props.deleteToDoList();
   };
 
-  activateEditMode = () => this.setState({ aditMode: true });
+  activateEditMode = () => this.setState({ addMode: true });
 
   deactivateEditMode = () => {
-    this.setState({ aditMode: false });
+    this.setState({ addMode: false });
     this.props.changeTitleList({ title: this.state.title }); //передаю наверх новый тайтл
   };
 
-  onTitleChanged = event => {
+  onTitleChanged = (event : React.ChangeEvent<HTMLInputElement>) => {
     let title = event.currentTarget.value;
     this.setState({ title });
   };
@@ -25,7 +36,7 @@ class TodoListTitle extends React.Component {
   render() {
     return (
       <div className="headerTitle">
-        {this.state.aditMode ? (
+        {this.state.addMode ? (
           <input
             type="text"
             value={this.state.title}

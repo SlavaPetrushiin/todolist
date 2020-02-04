@@ -1,24 +1,38 @@
 import React from "react";
+import {ITask} from "../Redux/interfaces";
 
-class TodoListTask extends React.Component {
+interface IProps{
+  key : string;
+  task : ITask;
+  changeTask : Function;
+  deleteTask : Function;
+};
+
+interface IState {
+  addMode : boolean;
+  title : string;
+}
+
+
+class TodoListTask extends React.Component<IProps, IState> {
   state = {
-    aditMode: false,
+    addMode: false,
     title: this.props.task.title
   };
 
   activeEditMode = () => {
     //активация поля ввода на таске
-    this.setState({ aditMode: true });
+    this.setState({ addMode: true });
   };
 
   deactivateEditMode = () => {
     //деактивация поля ввода на таске
-    this.setState({ aditMode: false });
+    this.setState({ addMode: false });
     this.props.changeTask(this.props.task.id, { title: this.state.title });
   };
 
   //изменение чекбокса
-  onIsDoneChanged = event => {
+  onIsDoneChanged = (event : React.ChangeEvent<HTMLInputElement>) => {
     let status = event.currentTarget.checked ? 2 : 0;
     this.props.changeTask(
       this.props.task.id, //id таски
@@ -27,15 +41,16 @@ class TodoListTask extends React.Component {
   };
 
   //изменение глобальной таски по изменению инпута
-  onTitleChanged = event => {
+  onTitleChanged = (event : React.ChangeEvent<HTMLInputElement>) => {
     let title = event.currentTarget.value;
     this.setState({ title });
   };
-  handleDeleteTask = event => {
+
+  handleDeleteTask = () => {
     this.props.deleteTask(this.props.task.id);
   };
 
-  handleChangeSelect = event =>{
+  handleChangeSelect = (event : React.ChangeEvent<HTMLSelectElement>) =>{
     let priority;
     switch (event.target.value) {
       case "Low":
@@ -54,8 +69,6 @@ class TodoListTask extends React.Component {
         priority = 4;
         break;
     }
-    let status = event.currentTarget.checked ? 2 : 0;
-    debugger
     this.props.changeTask(
         this.props.task.id, //id таски
         { priority }
@@ -93,7 +106,7 @@ class TodoListTask extends React.Component {
           onChange={this.onIsDoneChanged}
           className={classForTask}
         />
-        {this.state.aditMode ? (
+        {this.state.addMode ? (
           <input
             type="text"
             value={this.state.title}

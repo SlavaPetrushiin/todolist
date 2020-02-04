@@ -1,9 +1,16 @@
 import React from "react";
 import TodoListTask from "./TodoListTask";
+import {ITask} from "../Redux/interfaces";
 
-class TodoListTasks extends React.Component {
+interface IProps{
+  tasks: Array<ITask>;
+  changeTask : Function;
+  deleteTask : Function;
+};
+
+class TodoListTasks extends React.Component<IProps> {
   render = () => {
-    const tasksElements = this.props.tasks.map(task => {
+    const tasksElements = this.props.tasks.map((task : ITask) => {
       return (
         <TodoListTask
           key={task.id}
