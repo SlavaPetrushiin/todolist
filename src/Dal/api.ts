@@ -1,4 +1,4 @@
-import {ITask} from "../Redux/interfaces";
+import {IResGetToDoLists, ITask, ITodoList} from "../Redux/interfaces";
 const axios = require('axios');
 
 const instance = axios.create({
@@ -8,8 +8,10 @@ const instance = axios.create({
 });
 
 export const api = {
-  getToDoLists() {
-    return instance.get();
+  getToDoLists() : Promise<Array<ITodoList>>{
+    return instance.get().then((response: IResGetToDoLists) => {
+      return response.data;
+    });
   },
 
   createToDoList(text : string) {

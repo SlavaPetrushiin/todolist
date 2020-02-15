@@ -139,7 +139,6 @@ export const toDoListReducer = (
                 todoLists: state.todoLists.filter(list => list.id !== action.todoListId)
             };
         case SET_TODOLIST:
-            debugger
             let todoLists = action.todoLists.map((todoList: ITodoList) => {
                 return {
                     ...todoList,
@@ -213,9 +212,6 @@ export const changeTitleList = (
 //thunk
 export const getToDolistThunkCreator: Function = (): Function => (dispatch: Dispatch): void => {
     api.getToDoLists()
-        .then((response: IResGetToDoLists) => {
-            return response.data;
-        })
         .then((response: Array<ITodoList>) => {
             dispatch(setToDoList(response));
         });
@@ -267,7 +263,6 @@ export const createTaskThunkCreator: Function = (newTitleTask: string, todoListI
 export const deleteTaskThunkCreator: Function = (taskId: string, todoListId: string): Function => (dispatch: Dispatch): void => {
     api.deleteTask(taskId, todoListId)
         .then((response: IResDeleteTask) => {
-            debugger
             if (response.data.resultCode === 0) {
                 dispatch(deleteTask(taskId, todoListId));
             }

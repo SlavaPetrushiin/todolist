@@ -6,13 +6,13 @@ import TodoListTitle from "./TodoListTitle";
 import {connect} from "react-redux";
 import AddNewItemForm from "./AddNewItemForm";
 import {
-    filterTasks, showError,
+    filterTasks,
     createTaskThunkCreator, deleteTaskThunkCreator,
     deleteToDoListThunkCreator,
     getTasksThunkCreator, updateTaskThunkCreator,
     updateTitleToDoListThunkCreator
 } from "../Redux/reducer";
-import {Dispatch} from "redux";
+import {RootState} from "../Redux/store";
 
 interface IProps {
     id : string;
@@ -20,18 +20,23 @@ interface IProps {
     key : string;
     tasks : any[];
     filterValue : string;
-    filterTasks : Function;
-    showErrorMessage : Function;
-    deleteToDoListThunkCreator : Function;
-    updateTitleToDoListThunkCreator : Function;
-    getTasksThunkCreator : Function;
-    createTaskThunkCreator : Function;
-    deleteTaskThunkCreator : Function;
-    updateTaskThunkCreator : Function;
-    errorMessage : string
 };
 
-class ToDoList extends React.Component<IProps> {
+interface IMapStateToProps {
+    errorMessage : boolean
+}
+
+interface IDispatchStateToProps {
+    filterTasks : (newFilterValue : string, todoListId : string) => void;
+    deleteToDoListThunkCreator : (todoListId : string) => void;
+    updateTitleToDoListThunkCreator : (newTitle : string, todoListId : string) => void;
+    getTasksThunkCreator : (todoListId : string) => void;
+    createTaskThunkCreator : (newTask : any, todoListId : string) => void;
+    deleteTaskThunkCreator : (taskId : string, todoListId : string) => void;
+    updateTaskThunkCreator : (updatedTask : any, taskId : string, todoListId : string) => void;
+}
+
+class ToDoList extends React.Component<IProps & any & IDispatchStateToProps> {
     componentDidMount() {
         let todoListId = this.props.id;
         this.props.getTasksThunkCreator(todoListId);
@@ -116,57 +121,19 @@ class ToDoList extends React.Component<IProps> {
     }
 }
 
-const mapStateToProps = (state : any) => {
+
+const mapStateToProps = (state : RootState) : IMapStateToProps => {
     return {
         errorMessage: state.todoListsPage.errorMessage
     };
 };
 
-
-interface IMapDispatchToProps  {
-    filterTasks : (newFilterValue : string, todoListId : string) => void;
-    showErrorMessage : () => void;
-    deleteToDoListThunkCreator : (todoListId : string) => void;
-    updateTitleToDoListThunkCreator : (newTitle : string, todoListId : string) => void;
-    getTasksThunkCreator : (todoListId : string) => void;
-    createTaskThunkCreator : (newTask : any, todoListId : string) => void;
-    deleteTaskThunkCreator : (taskId : any, todoListId : string) => void;
-    updateTaskThunkCreator : (updatedTask : any, taskId : string, todoListId : string) => void;
-}
-
-
-const mapDispatchToProps = (dispatch : Dispatch) : IMapDispatchToProps => {//Не забудь проработать!!!!!
-    return {
-        filterTasks: (newFilterValue, todoListId) => {
-            dispatch(filterTasks(newFilterValue, todoListId));
-        },
-        showErrorMessage: () => {
-            dispatch(showError());
-        },
-        deleteToDoListThunkCreator: (todoListId) => {
-            dispatch(deleteToDoListThunkCreator(todoListId))
-        },
-        updateTitleToDoListThunkCreator: (newTitle, todoListId) => {
-            dispatch(updateTitleToDoListThunkCreator(newTitle, todoListId))
-        },
-        getTasksThunkCreator: (todoListId ) => {
-            dispatch(getTasksThunkCreator(todoListId));
-        },
-        createTaskThunkCreator: (newTask, todoListId) => {
-            dispatch(createTaskThunkCreator(newTask, todoListId));
-        },
-        deleteTaskThunkCreator: (taskId, todoListId) => {
-            dispatch(deleteTaskThunkCreator(taskId, todoListId));
-        },
-        updateTaskThunkCreator: (updatedTask, taskId, todoListId) => {
-            dispatch(updateTaskThunkCreator(updatedTask, taskId, todoListId));
-        }
-    };
-};
-
 const TodoListContainer = connect(
     mapStateToProps,
-    mapDispatchToProps
+    {
+        filterTasks, deleteToDoListThunkCreator, updateTitleToDoListThunkCreator,
+        getTasksThunkCreator, createTaskThunkCreator,  deleteTaskThunkCreator, updateTaskThunkCreator
+    }
 )(ToDoList);
 
 export default TodoListContainer;
