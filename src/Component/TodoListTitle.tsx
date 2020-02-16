@@ -25,7 +25,8 @@ class TodoListTitle extends React.Component<IProps, IState> {
 
   deactivateEditMode = () => {
     this.setState({ addMode: false });
-    this.props.changeTitleList({ title: this.state.title }); //передаю наверх новый тайтл
+    let newTitleList = this.state.title;
+    this.props.changeTitleList(newTitleList); //передаю наверх новый тайтл
   };
 
   onTitleChanged = (event : React.ChangeEvent<HTMLInputElement>) => {

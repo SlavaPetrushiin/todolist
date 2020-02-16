@@ -4,8 +4,20 @@ import AddNewItemForm from "./Component/AddNewItemForm";
 import TodoList from "./Component/TodoList";
 import { connect } from "react-redux";
 import { createToDoListThunkCreator, getToDolistThunkCreator} from "./Redux/reducer";
+import {RootState} from "./Redux/store";
+import {ITodoList} from "./Redux/interfaces";
 
-class App extends React.Component<any> {
+interface IStateToProps {
+  todoLists : Array<ITodoList>;
+}
+
+interface IDispatchToProps {
+  getToDolistThunkCreator : () => void;
+  createToDoListThunkCreator : (title : string) => void;
+}
+
+
+class App extends React.Component<IStateToProps & IDispatchToProps> {
   componentDidMount() {
     this.props.getToDolistThunkCreator()
   }
@@ -15,7 +27,7 @@ class App extends React.Component<any> {
   };
 
   render() {
-    let todoLists = this.props.todoLists.map((list: any) => (
+    let todoLists = this.props.todoLists.map((list: ITodoList) => (
       <TodoList
         id={list.id}
         title={list.title}
@@ -26,27 +38,22 @@ class App extends React.Component<any> {
     ));
 
     return (
-      <React.Fragment>
+      <div className={'wrapper'}>
         <AddNewItemForm addItem={this.addToDoList} />
         <div className="App">{todoLists}</div>
-      </React.Fragment>
+      </div>
     );
   }
 }
 
-const mapStateToProps = (state : any) => {
+const mapStateToProps = (state : RootState) => {
   return {
     todoLists: state.todoListsPage.todoLists
   };
 };
 
-const mapDispatchToProps = (dispatch : any) => {
-  return {
-    getToDolistThunkCreator : () => dispatch(getToDolistThunkCreator()),
-    createToDoListThunkCreator: (title : string) => dispatch(createToDoListThunkCreator(title))
-  };
-};
 
-const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
+
+const ConnectedApp = connect(mapStateToProps, {getToDolistThunkCreator, createToDoListThunkCreator})(App);
 
 export default ConnectedApp;

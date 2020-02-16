@@ -210,14 +210,14 @@ export const changeTitleList = (
 
 
 //thunk
-export const getToDolistThunkCreator: Function = (): Function => (dispatch: Dispatch): void => {
+export const getToDolistThunkCreator = () => (dispatch: Dispatch): void => {
     api.getToDoLists()
         .then((response: Array<ITodoList>) => {
             dispatch(setToDoList(response));
         });
 };
 
-export const createToDoListThunkCreator: Function = (title: string): Function => (dispatch: Dispatch): void => {
+export const createToDoListThunkCreator = (title: string) => (dispatch: Dispatch): void => {
     api.createToDoList(title)
         .then((response: ICreateNewToDoList) => {
             let todoList = response.data.data.item;
@@ -225,7 +225,7 @@ export const createToDoListThunkCreator: Function = (title: string): Function =>
         });
 };
 
-export const deleteToDoListThunkCreator: Function = (todoListId: string): Function => (dispatch: Dispatch): void => {
+export const deleteToDoListThunkCreator = (todoListId: string) => (dispatch: Dispatch): void => {
     api.deleteToDoList(todoListId)
         .then((response: IResDeleteToDoList) => {
             if (response.data.resultCode === 0) {
@@ -234,21 +234,21 @@ export const deleteToDoListThunkCreator: Function = (todoListId: string): Functi
         });
 };
 
-export const updateTitleToDoListThunkCreator: Function = (title: string, todoListId: string): Function => (dispatch: Dispatch): void => {
+export const updateTitleToDoListThunkCreator = (title: string, todoListId: string) => (dispatch: Dispatch): void => {
     api.updateTitleToDoList(title, todoListId)
         .then((response: IResUpdateTitleToDoList) => {
             dispatch(changeTitleList(title, todoListId));
         });
 };
 
-export const getTasksThunkCreator: Function = (todoListId: string): Function => (dispatch: Dispatch): void => {
+export const getTasksThunkCreator = (todoListId: string) => (dispatch: Dispatch): void => {
     api.getTasks(todoListId).then((response: IResGetTasks) => {
         let tasks : Array<ITask> = response.data.items;
         dispatch(setTasks(tasks, todoListId));
     });
 };
 
-export const createTaskThunkCreator: Function = (newTitleTask: string, todoListId: string): Function => (dispatch: Dispatch): void => {
+export const createTaskThunkCreator = (newTitleTask: string, todoListId: string) => (dispatch: Dispatch): void => {
     api.createTask(newTitleTask, todoListId)
         .then((response: IResCreateNewTask) => {
             if (response.data.resultCode === 0) {
@@ -260,7 +260,7 @@ export const createTaskThunkCreator: Function = (newTitleTask: string, todoListI
         });
 };
 
-export const deleteTaskThunkCreator: Function = (taskId: string, todoListId: string): Function => (dispatch: Dispatch): void => {
+export const deleteTaskThunkCreator = (taskId: string, todoListId: string) => (dispatch: Dispatch): void => {
     api.deleteTask(taskId, todoListId)
         .then((response: IResDeleteTask) => {
             if (response.data.resultCode === 0) {
@@ -269,7 +269,8 @@ export const deleteTaskThunkCreator: Function = (taskId: string, todoListId: str
         });
 };
 
-export const updateTaskThunkCreator: Function = (updateTask: any, taskId: string, todoListId: string): Function => (dispatch: Dispatch): void => {
+export const updateTaskThunkCreator = (updateTask: ITask, taskId: string, todoListId: string) => (dispatch: Dispatch): void => {
+    debugger
     api.updateTask(updateTask, taskId, todoListId)
         .then((response: IResUpdateTitleTask) => {
             dispatch(changeTask(response.data.data.item)); //мне не нравиться, что пришла вся таска, а отдаем obj

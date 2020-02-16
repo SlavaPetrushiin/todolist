@@ -13,12 +13,13 @@ import {
     updateTitleToDoListThunkCreator
 } from "../Redux/reducer";
 import {RootState} from "../Redux/store";
+import {IObjChangeTask, ITask} from "../Redux/interfaces";
 
 interface IProps {
     id : string;
     title : string;
     key : string;
-    tasks : any[];
+    tasks : Array<ITask>;
     filterValue : string;
 };
 
@@ -31,12 +32,12 @@ interface IDispatchStateToProps {
     deleteToDoListThunkCreator : (todoListId : string) => void;
     updateTitleToDoListThunkCreator : (newTitle : string, todoListId : string) => void;
     getTasksThunkCreator : (todoListId : string) => void;
-    createTaskThunkCreator : (newTask : any, todoListId : string) => void;
+    createTaskThunkCreator : (newTitleTask: string, todoListId : string) => void;
     deleteTaskThunkCreator : (taskId : string, todoListId : string) => void;
-    updateTaskThunkCreator : (updatedTask : any, taskId : string, todoListId : string) => void;
+    updateTaskThunkCreator : (updatedTask : ITask, taskId : string, todoListId : string) => void;
 }
 
-class ToDoList extends React.Component<IProps & any & IDispatchStateToProps> {
+class ToDoList extends React.Component<IProps & IMapStateToProps & IDispatchStateToProps> {
     componentDidMount() {
         let todoListId = this.props.id;
         this.props.getTasksThunkCreator(todoListId);
@@ -44,17 +45,19 @@ class ToDoList extends React.Component<IProps & any & IDispatchStateToProps> {
 
     addTask = (newTitleTask : string) => {
         let todoListId = this.props.id;
-        this.props.createTaskThunkCreator(newTitleTask, todoListId)
+        this.props.createTaskThunkCreator(newTitleTask, todoListId);
     };
 
-    changeTask = (taskId : string, obj : any) => {
+    changeTask = (taskId : string, obj : IObjChangeTask) => {
         let todoListId = this.props.id;
-        let changeUserTask = this.props.tasks.find((task: any) => task.id === taskId);
-        let updateTask = {
-            ...changeUserTask,
-            ...obj
-        };
-        this.props.updateTaskThunkCreator(updateTask, taskId, todoListId);
+        let changeUserTask = this.props.tasks.find((task: ITask) => task.id === taskId);
+        if(changeUserTask) {
+            let updateTask = {
+                ...changeUserTask,
+                ...obj
+            };
+            this.props.updateTaskThunkCreator(updateTask, taskId, todoListId);
+        }
     };
 
     changeFilter = (newFilterValue : string) => {
@@ -72,22 +75,21 @@ class ToDoList extends React.Component<IProps & any & IDispatchStateToProps> {
         this.props.deleteToDoListThunkCreator(todoListId);
     };
 
-    changeTitleList = ({title} : any) => {
+    changeTitleList = (newTitleList : string) => {
         let todoListId = this.props.id;
-        this.props.updateTitleToDoListThunkCreator(title, todoListId);
+        this.props.updateTitleToDoListThunkCreator(newTitleList, todoListId);
     };
 
     render() {
-        const getFilterTasks = (tasks : any, filter : string) => {
-            return tasks.filter((task : any) => {
-                // eslint-disable-next-line default-case
+        const getFilterTasks = (tasks : Array<ITask>, filter : string) => {
+            return tasks.filter((task : ITask) => {
                 switch (filter) {
                     case "All":
                         return true;
                     case "Completed":
-                        return !task.isDone;
+                        return task.status === 2;
                     case "Active":
-                        return task.isDone;
+                        return task.status === 0;
                 }
             });
         };

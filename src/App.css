@@ -10,7 +10,15 @@ h4 {
   padding: 0;
 }
 
-.App {
+body{
+  background-color: powderblue;
+}
+
+.wrapper {
+  margin: 0 auto;
+  width: 800px;
+  padding: 20px 15px;
+  background-color: antiquewhite;
 }
 
 .todoList {
@@ -23,10 +31,6 @@ h4 {
 }
 
 .todoList-task {
-}
-
-.filter-active {
-  background-color: blue;
 }
 
 .error {

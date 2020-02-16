@@ -1,4 +1,5 @@
 import React from "react";
+import "./Style/TodoListFooter.css";
 
 interface IProps{
   changeFilter : Function;
@@ -44,18 +45,18 @@ class TodoListFooter extends React.Component<IProps, IState> {
       <div className="todoList-footer">
         {!this.state.isHidden && (
           <div>
-            <button onClick={this.onAllFilterClick} className={classForAll}>
+            <button onClick={this.onAllFilterClick} className={classForAll + ' ' + 'buttonSort' + ' ' + 'buttonSort1'}>
               All
             </button>
             <button
               onClick={this.onCompletedFilterClick}
-              className={classForCompleted}
+              className={classForCompleted + ' ' + 'buttonSort' + ' ' + 'buttonSort1'}
             >
               Completed
             </button>
             <button
               onClick={this.onActiveFilterClick}
-              className={classForActive}
+              className={classForActive + ' ' + 'buttonSort' + ' ' + 'buttonSort1'}
             >
               Active
             </button>
