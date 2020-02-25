@@ -18,5 +18,10 @@
   font-weight: 600;
 }
 
+.del-task{
+  color: red;
+  margin: 0 10px;
+  cursor: pointer;
+}
 
 

@@ -128,7 +128,7 @@ class TodoListTask extends React.Component<IProps, IState> {
                             <option value="Urgently">Urgently</option>
                             <option value="Later">Later</option>
                         </select>
-                        <span style={{color: "red", margin: "0 10px"}} onClick={this.handleDeleteTask} className={'my-flex-box'}>
+                        <span onClick={this.handleDeleteTask} className={'my-flex-box' + ' ' + 'del-task'}>
                           &#10008;
                         </span>
                     </>
