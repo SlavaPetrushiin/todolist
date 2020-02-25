@@ -1,6 +1,7 @@
 .todoList-newTaskForm{
   display: flex;
   justify-content: space-around;
+  margin-bottom: 40px;
 }
 
 input[type=text], .button{

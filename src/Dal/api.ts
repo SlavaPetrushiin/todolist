@@ -1,44 +1,71 @@
-import {IResGetToDoLists, ITask, ITodoList} from "../Redux/interfaces";
-const axios = require('axios');
+import {
+    IDeletedToDoList,
+    IResCreateToDoList, IResGetTasks,
+    ITask,
+    ITodoList,
+    IUpdateTitleToDoList
+} from "../Redux/interfaces";
+import axios from "axios"
 
 const instance = axios.create({
-  baseURL: "https://social-network.samuraijs.com/api/1.1/todo-lists",
-  withCredentials: true,
-  headers: { "API-KEY": "c42da93b-73d1-47c9-9b91-cb5950b4c7d5" }
+    baseURL: "https://social-network.samuraijs.com/api/1.1/todo-lists",
+    withCredentials: true,
+    headers: {"API-KEY": "c42da93b-73d1-47c9-9b91-cb5950b4c7d5"}
 });
 
 export const api = {
-  getToDoLists() : Promise<Array<ITodoList>>{
-    return instance.get().then((response: IResGetToDoLists) => {
-      return response.data;
-    });
-  },
+    getToDoLists(): Promise<Array<ITodoList>> {
+        return instance.get<Array<ITodoList>>('')
+            .then(response => {
+                return response.data;
+            });
+    },
 
-  createToDoList(text : string) {
-    return instance.post("", { title: text });
-  },
+    createToDoList(text: string) : Promise<ITodoList> {
+        return instance.post<IResCreateToDoList>("", {title: text}).then(response => {
+            let todoList = response.data.data.item;
+            return todoList
+        });
+        ;
+    },
 
-  deleteToDoList(todoListId : string) {
-    return instance.delete(`/${todoListId}`);
-  },
+    deleteToDoList(todoListId: string) : Promise<number> {
+        return instance.delete<IDeletedToDoList>(`/${todoListId}`).then(response => {
+            return response.data.resultCode;
+        });
+    },
 
-  updateTitleToDoList(newTitle : string, todoListId : string) {
-    return instance.put(`/${todoListId}`, { title: newTitle });
-  },
+    updateTitleToDoList(newTitle: string, todoListId: string) : Promise<IUpdateTitleToDoList> {
+        return instance.put<IUpdateTitleToDoList>(`/${todoListId}`, {title: newTitle}).then(response => {
+            return response.data
+        });;
+    },
 
-  getTasks(todoListId : string) {
-    return instance.get(`/${todoListId}/tasks`);
-  },
+    getTasks(todoListId: string) : Promise<ITask[]> {
+        return instance.get<IResGetTasks>(`/${todoListId}/tasks`).then(response => {
 
-  createTask(newTitleTask : string, todoListId : string) {
-    return instance.post(`/${todoListId}/tasks`, { title: newTitleTask });
-  },
+            return response.data.items;
+        });
+    },
 
-  deleteTask(taskId : string, todoListId : string) {
-    return instance.delete(`/${todoListId}/tasks/${taskId}`);
-  },
+    createTask(newTitleTask: string, todoListId: string) : Promise<ITask>{
+        return instance.post(`/${todoListId}/tasks`, {title: newTitleTask}).then(response => {
+            if (response.data.resultCode === 0) {
 
-  updateTask(updateTask : ITask, taskId : string, todoListId : string) {
-    return instance.put(`/${todoListId}/tasks/${taskId}`, updateTask);
-  }
+                return response.data.data.item
+            }
+        });
+    },
+
+    deleteTask(taskId: string, todoListId: string) : Promise<number> {
+        return instance.delete(`/${todoListId}/tasks/${taskId}`).then(response => {
+            return response.data.resultCode
+        });
+    },
+
+    updateTask(updateTask: ITask, taskId: string, todoListId: string) : Promise<ITask> {
+        return instance.put(`/${todoListId}/tasks/${taskId}`, updateTask).then(response => {
+            return response.data.data.item
+        });
+    }
 };

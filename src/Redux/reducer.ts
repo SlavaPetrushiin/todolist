@@ -20,16 +20,11 @@ import {
     ISetToDoList,
     ISetTasks,
     IChangeTitleList,
-    ERROR
 } from "../types/actions";
 import {
-    ICreateNewToDoList, IResCreateNewTask, IResDeleteTask,
-    IResDeleteToDoList,
-    IResGetTasks,
-    IResGetToDoLists, IResUpdateTitleTask,
-    IResUpdateTitleToDoList,
     ITask,
-    ITodoList
+    ITodoList,
+    IUpdateTitleToDoList
 } from "./interfaces";
 
 interface IState {
@@ -67,7 +62,7 @@ export const toDoListReducer = (
                 ...state,
                 todoLists: state.todoLists.map((todoList: ITodoList) => {
                     if (todoList.id === action.todoListId) {
-                        debugger;
+                        ;
                         return {...todoList, title: action.newTitle};
                     } else {
                         return todoList;
@@ -86,7 +81,7 @@ export const toDoListReducer = (
                 })
             };
         case CHANGE_TASK:
-            debugger;
+            ;
             return {
                 ...state,
                 todoLists: state.todoLists.map((todoList: ITodoList) => {
@@ -219,16 +214,15 @@ export const getToDolistThunkCreator = () => (dispatch: Dispatch): void => {
 
 export const createToDoListThunkCreator = (title: string) => (dispatch: Dispatch): void => {
     api.createToDoList(title)
-        .then((response: ICreateNewToDoList) => {
-            let todoList = response.data.data.item;
+        .then((todoList: ITodoList) => {
             dispatch(addTodolist(todoList));
         });
 };
 
 export const deleteToDoListThunkCreator = (todoListId: string) => (dispatch: Dispatch): void => {
     api.deleteToDoList(todoListId)
-        .then((response: IResDeleteToDoList) => {
-            if (response.data.resultCode === 0) {
+        .then(resultCode => {
+            if (resultCode === 0) {
                 dispatch(deleteToDoList(todoListId));
             }
         });
@@ -236,45 +230,37 @@ export const deleteToDoListThunkCreator = (todoListId: string) => (dispatch: Dis
 
 export const updateTitleToDoListThunkCreator = (title: string, todoListId: string) => (dispatch: Dispatch): void => {
     api.updateTitleToDoList(title, todoListId)
-        .then((response: IResUpdateTitleToDoList) => {
+        .then((response: IUpdateTitleToDoList) => {
             dispatch(changeTitleList(title, todoListId));
         });
 };
 
 export const getTasksThunkCreator = (todoListId: string) => (dispatch: Dispatch): void => {
-    api.getTasks(todoListId).then((response: IResGetTasks) => {
-        let tasks : Array<ITask> = response.data.items;
+    api.getTasks(todoListId).then(tasks => {
         dispatch(setTasks(tasks, todoListId));
     });
 };
 
 export const createTaskThunkCreator = (newTitleTask: string, todoListId: string) => (dispatch: Dispatch): void => {
     api.createTask(newTitleTask, todoListId)
-        .then((response: IResCreateNewTask) => {
-            if (response.data.resultCode === 0) {
-                let newTask = {
-                    ...response.data.data.item
-                };
-                dispatch(addTask(newTask, todoListId));
-            }
+        .then(response => {
+            dispatch(addTask(response, todoListId));
         });
 };
 
 export const deleteTaskThunkCreator = (taskId: string, todoListId: string) => (dispatch: Dispatch): void => {
     api.deleteTask(taskId, todoListId)
-        .then((response: IResDeleteTask) => {
-            if (response.data.resultCode === 0) {
+        .then((resultCode) => {
+            if (resultCode === 0) {
                 dispatch(deleteTask(taskId, todoListId));
             }
         });
 };
 
 export const updateTaskThunkCreator = (updateTask: ITask, taskId: string, todoListId: string) => (dispatch: Dispatch): void => {
-    debugger
     api.updateTask(updateTask, taskId, todoListId)
-        .then((response: IResUpdateTitleTask) => {
-            dispatch(changeTask(response.data.data.item)); //мне не нравиться, что пришла вся таска, а отдаем obj
+        .then((task) => {
+            dispatch(changeTask(task));
         });
 };
 
-export const showError = () => ({type: ERROR});

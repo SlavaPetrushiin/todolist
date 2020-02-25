@@ -1,8 +1,8 @@
 import React from "react";
+import "./Style/TodoListTitle.css";
 
 interface IProps{
   title : string;
-  deleteToDoList : Function;
   changeTitleList : Function;
 }
 
@@ -15,10 +15,6 @@ class TodoListTitle extends React.Component<IProps, IState> {
   state = {
     addMode: false,
     title: this.props.title
-  };
-
-  handleDeleteList = () => {
-    this.props.deleteToDoList();
   };
 
   activateEditMode = () => this.setState({ addMode: true });
@@ -52,10 +48,6 @@ class TodoListTitle extends React.Component<IProps, IState> {
             {this.state.title}
           </h3>
         )}
-
-        <span style={{ color: "red" }} onClick={this.handleDeleteList}>
-          &#10008;
-        </span>
       </div>
     );
   }

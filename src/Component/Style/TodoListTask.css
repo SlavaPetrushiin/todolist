@@ -1,0 +1,22 @@
+.todoList-task{
+  border-bottom: 1px solid black;
+  margin-bottom: 10px;
+  padding: 6px 0;
+  display: flex;
+  width: 100%;
+}
+
+.todoList-task
+
+.todoList-task .done {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.my-flex-box:nth-child(2) {
+  flex: 12 1 auto;
+  font-weight: 600;
+}
+
+
+

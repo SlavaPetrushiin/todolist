@@ -1,0 +1,8 @@
+.headerTitle{
+  margin-bottom: 10px;
+}
+
+.todoList-header__title{
+  font-size: 18px;
+  font-style: italic;
+}

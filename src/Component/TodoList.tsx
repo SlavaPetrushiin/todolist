@@ -1,5 +1,6 @@
 import React from "react";
 import "./../App.css";
+import "./Style/TodoList.css";
 import TodoListFooter from "./TodoListFooter";
 import TodoListTasks from "./TodoListTasks";
 import TodoListTitle from "./TodoListTitle";
@@ -97,12 +98,14 @@ class ToDoList extends React.Component<IProps & IMapStateToProps & IDispatchStat
         let errorMessage = this.props.errorMessage && "Error"; //вывожу ошибку по запросам
 
         return (
-            <div className="App">
+            <div className="wrapper_todoList">
                 <div className="todoList">
+                    <div className='wrapper_deleted' onClick={this.deleteToDoList}>
+                        &#10008;
+                    </div>
                     <header className="header">
                         <TodoListTitle
                             title={this.props.title}
-                            deleteToDoList={this.deleteToDoList}
                             changeTitleList={this.changeTitleList}
                         />
                         <AddNewItemForm addItem={this.addTask}/>

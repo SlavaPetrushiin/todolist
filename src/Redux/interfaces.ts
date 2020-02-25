@@ -28,130 +28,36 @@ export interface IObjChangeTask{
     priority? : number;
 }
 
-
-
-// interface for thunk ******************
-// common interface *************
-interface headersResponse {
-    'cache-control': string;
-    'content-length': string;
-    'content-type': string;
-    'expires': string;
-    'pragma': string;
-}
-
-interface DeleteAndUpdateToDoList{
-    data: {};
-    messages : string[];
-    resultCode : number;
-}
-
-// Получение листов
-export interface IResGetToDoLists{
-    data: Array<ITodoList>;
-    status: number;
-    statusText: string;
-    headers: headersResponse;
-    config: object;
-    request: object;
-}
-
-//Создание нового листа
-interface IForCreateNewToDoList{
-    data: {item : ITodoList};
-    messages : string[];
-    resultCode : number;
-}
-
-export interface ICreateNewToDoList{
-    data: IForCreateNewToDoList
-    status: number;
-    statusText: string;
-    headers: headersResponse;
-    config: object;
-    request: object;
+//Ответ от сервера, создание нового листа
+export interface IResCreateToDoList {
+    data : {
+            item : ITodoList;
+        }
 }
 
 //Удаление листа
-export interface IResDeleteToDoList{
-    data: DeleteAndUpdateToDoList
-    status: number;
-    statusText: string;
-    headers: headersResponse;
-    config: object;
-    request: object;
+export interface IDeletedToDoList {
+    resultCode: number;
+    messages?: [];
+    data?: {};
 }
 
-//Обновление названия листа
-export interface IResUpdateTitleToDoList{
-    data: DeleteAndUpdateToDoList
-    status: number;
-    statusText: string;
-    headers: headersResponse;
-    config: object;
-    request: object;
+export interface IUpdateTitleToDoList {
+    resultCode: number;
+    messages?: [];
+    data?: {};
 }
 
-
-//Запрос на получение тасок
-interface IResForTasksData{
-    items : Array<ITask>;
-    totalCount: number;
-    error: string | null;
+export interface IResCreateTask {
+    data : {
+        item : ITask;
+        resultCode: number;
+    }
 }
 
-export interface IResGetTasks{
-    data: IResForTasksData;
-    status: number;
-    statusText: string;
-    headers: headersResponse;
-    config: object;
-    request: object;
+export interface IResGetTasks {
+    items : ITask[];
 }
-
-//Создание новой таски
-interface IForCreateNewTask{
-    data: {item : ITask};
-    messages : string[];
-    resultCode : number;
-}
-
-export interface IResCreateNewTask{
-    data: IForCreateNewTask
-    status: number;
-    statusText: string;
-    headers: headersResponse;
-    config: object;
-    request: object;
-}
-//Удаление таски
-export interface IResDeleteTask{
-    data: DeleteAndUpdateToDoList
-    status: number;
-    statusText: string;
-    headers: headersResponse;
-    config: object;
-    request: object;
-}
-
-//Обновление таски
-interface IForUpdateTitleTask{
-    data: {item : ITask};
-    messages : string[];
-    resultCode : number;
-}
-
-export interface IResUpdateTitleTask{
-    data: IForUpdateTitleTask
-    status: number;
-    statusText: string;
-    headers: headersResponse;
-    config: object;
-    request: object;
-}
-
-//*********************
-type data = IForUpdateTitleTask | DeleteAndUpdateToDoList
 
 
 
