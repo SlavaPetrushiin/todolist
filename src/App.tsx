@@ -6,9 +6,11 @@ import { connect } from "react-redux";
 import { createToDoListThunkCreator, getToDolistThunkCreator} from "./Redux/reducer";
 import {RootState} from "./Redux/store";
 import {ITodoList} from "./Redux/interfaces";
+import LoginForm from "./Component/LoginForm";
 
 interface IStateToProps {
   todoLists : Array<ITodoList>;
+  authorization : boolean;
 }
 
 interface IDispatchToProps {
@@ -38,17 +40,22 @@ class App extends React.Component<IStateToProps & IDispatchToProps> {
     ));
 
     return (
-      <div className={'wrapper'}>
-        <AddNewItemForm addItem={this.addToDoList} />
-        <div className="App">{todoLists}</div>
-      </div>
+        <div className={'wrapper'}>
+          {
+            this.props.authorization ? <LoginForm/> : <>
+              <AddNewItemForm addItem={this.addToDoList}/>
+              <div className="App">{todoLists}</div>
+            </>
+          }
+        </div>
     );
   }
 }
 
 const mapStateToProps = (state : RootState) => {
   return {
-    todoLists: state.todoListsPage.todoLists
+    todoLists: state.todoListsPage.todoLists,
+    authorization: state.todoListsPage.authorization
   };
 };
 

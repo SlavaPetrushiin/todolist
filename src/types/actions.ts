@@ -8,6 +8,7 @@ export const SET_TODOLIST = "TodoList/Reducer/SET-TODOLIST";
 export const SET_TASKS = "TodoList/Reducer/SET-TASKS";
 export const ERROR = "TodoList/Reducer/ERROR";
 export const CHANGE_TITLE_LIST = "TodoList/Reducer/CHANGE_TITLE_LIST";
+export const FORM_LOGIN = "TodoList/Reducer/FORM_LOGIN";
 
 //interface для каждого actionCreator
 
@@ -65,6 +66,10 @@ export interface IError {
     type: typeof ERROR
 };
 
+export interface ILogin{
+    type: typeof FORM_LOGIN
+};
+
 // Собираю все interface для reducer
 export type allActionTypes =
     | IAddTodolist
@@ -77,5 +82,6 @@ export type allActionTypes =
     | ISetTasks
     | IChangeTitleList
     | IError
+    | ILogin
 
 

@@ -20,21 +20,25 @@ import {
     ISetToDoList,
     ISetTasks,
     IChangeTitleList,
+    FORM_LOGIN, ILogin,
 } from "../types/actions";
 import {
     ITask,
     ITodoList,
     IUpdateTitleToDoList
 } from "./interfaces";
+import {apiAuthorization} from "../Dal/apiAuthorization";
 
 interface IState {
     todoLists: Array<ITodoList>;
     errorMessage: boolean;
+    authorization: boolean;
 }
 
 const initialState: IState = {
     todoLists: [],
-    errorMessage: false
+    errorMessage: false,
+    authorization : false
 };
 
 export const toDoListReducer = (
@@ -42,12 +46,6 @@ export const toDoListReducer = (
     action: allActionTypes
 ) => {
     switch (action.type) {
-        // case ERROR:
-        //     return {
-        //         ...state,
-        //         errorMessage: true
-        //     };
-
         case ADD_TODOLIST:
             return {
                 ...state,
@@ -159,6 +157,11 @@ export const toDoListReducer = (
                     }
                 })
             };
+        case FORM_LOGIN :
+            return {
+                ...state,
+                authorization : true
+            }
         default:
             return state;
     }
@@ -202,6 +205,8 @@ export const changeTitleList = (
     newTitle: string,
     todoListId: string
 ): IChangeTitleList => ({type: CHANGE_TITLE_LIST, newTitle, todoListId});
+
+export const authorizationAC = () : ILogin => ({type : FORM_LOGIN});
 
 
 //thunk
@@ -263,4 +268,14 @@ export const updateTaskThunkCreator = (updateTask: ITask, taskId: string, todoLi
             dispatch(changeTask(task));
         });
 };
+
+export const authorizationUser = (email : string, password : string, rememberMe : boolean) => (dispatch: Dispatch): void => {
+    apiAuthorization.authorization(email, password, rememberMe).then(response => {
+        debugger
+        if (response.resultCode === 0) {
+            dispatch(authorizationAC());
+        }
+    })
+};
+
 
