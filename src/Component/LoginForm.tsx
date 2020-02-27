@@ -23,6 +23,7 @@ class LoginForm extends Component<IDispatchToProps> {
     onHandleSubmit = (e : any) => {
         e.preventDefault();
         const {email, password, rememberMe} = this.state;
+        debugger
         this.props.authorizationUser(email, password, rememberMe)
     };
 

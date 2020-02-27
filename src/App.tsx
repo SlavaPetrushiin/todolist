@@ -42,7 +42,7 @@ class App extends React.Component<IStateToProps & IDispatchToProps> {
     return (
         <div className={'wrapper'}>
           {
-            this.props.authorization ? <LoginForm/> : <>
+            !this.props.authorization ? <LoginForm/> : <>
               <AddNewItemForm addItem={this.addToDoList}/>
               <div className="App">{todoLists}</div>
             </>
