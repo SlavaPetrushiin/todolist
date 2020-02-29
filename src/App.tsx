@@ -20,8 +20,10 @@ interface IDispatchToProps {
 
 
 class App extends React.Component<IStateToProps & IDispatchToProps> {
-  componentDidMount() {
-    this.props.getToDolistThunkCreator()
+  componentDidUpdate(prevProps: any, prevState: IStateToProps){
+    if(prevProps.authorization !== this.props.authorization ){
+      this.props.getToDolistThunkCreator()
+    }
   }
 
   addToDoList = (title : string) => {

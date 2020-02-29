@@ -271,7 +271,7 @@ export const updateTaskThunkCreator = (updateTask: ITask, taskId: string, todoLi
 
 export const authorizationUser = (email : string, password : string, rememberMe : boolean) => (dispatch: Dispatch): void => {
     apiAuthorization.authorization(email, password, rememberMe).then(response => {
-        debugger
+
         if (response.resultCode === 0) {
             dispatch(authorizationAC());
         }
