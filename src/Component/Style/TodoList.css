@@ -8,7 +8,6 @@
 
 .todoList{
     position: relative;
-    width: 480px;
     border: 2px solid green;
     padding: 15px;
     border-radius: 10px;
@@ -35,4 +34,14 @@
 
 .wrapper_deleted:hover{
     transform : scale(1.1);
+}
+
+@media (max-width: 420px) {
+    .wrapper_deleted{
+        top: -15px;
+        right: -15px;
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+    }
 }

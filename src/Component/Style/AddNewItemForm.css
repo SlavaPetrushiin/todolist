@@ -53,3 +53,9 @@ input[type=text] {
   opacity: 1;
   right: 0;
 }
+
+@media (max-width: 420px) {
+  .todoList-newTaskForm{
+    margin-bottom: 20px;
+  }
+}

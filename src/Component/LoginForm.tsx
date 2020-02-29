@@ -15,8 +15,8 @@ interface IState {
 
 class LoginForm extends Component<IDispatchToProps> {
     state : IState ={
-        email : 'free@samuraijs.com',
-        password : 'free',
+        email : 'petrushin.vyac@yandex.ru',
+        password : '488661632',
         rememberMe : false
     };
 
@@ -29,23 +29,21 @@ class LoginForm extends Component<IDispatchToProps> {
 
     render() {
         const {email, password} = this.state;
-        const disabledBtn = email !== 'free@samuraijs.com' && password !== 'free';
+        const disabledBtn = email !== 'petrushin.vyac@yandex.ru' && password !== '488661632';
         return (
             <div className="form-wrap">
                 <div className="profile">
-                    <div className={'login-photo'}></div>
+                    <div className={'login-photo'}/>
                     <h1>Регистрация</h1>
                 </div>
                 <form  className={'login-form'} onSubmit={this.onHandleSubmit}>
                     <div>
                         <label htmlFor="email">E-mail</label>
                         <input type="email" name="email" placeholder={'free@samuraijs.com'} value={email} required />
-                        <span>Введите: free@samuraijs.com</span>
                     </div>
                     <div>
                         <label htmlFor="password">Password</label>
                         <input type="password" name="password" required placeholder={'free'} value={password}/>
-                        <span>Введите: free</span>
                     </div>
                     <button type="submit" disabled={disabledBtn}>Отправить</button>
                 </form>

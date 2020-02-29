@@ -4,6 +4,8 @@
   padding: 6px 0;
   display: flex;
   width: 100%;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .todoList-task
@@ -15,7 +17,9 @@
 
 .my-flex-box:nth-child(2) {
   flex: 12 1 auto;
+  word-break: break-all;
   font-weight: 600;
+  margin: 0 10px;
 }
 
 .del-task{

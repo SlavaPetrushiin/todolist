@@ -16,8 +16,9 @@ body{
 
 .wrapper {
   margin: 0 auto;
-  width: 550px;
-  padding: 20px 15px;
+  max-width: 550px;
+  width: 100%;
+  padding: 20px 23px;
   background-color: #eae8e8;
   display: flex;
   flex-direction: column;
@@ -26,6 +27,12 @@ body{
 
 .error {
   border-color: red;
+}
+
+@media (max-width: 420px) {
+  .wrapper {
+    padding: 17px;
+  }
 }
 
 

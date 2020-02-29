@@ -26,26 +26,22 @@ class TodoListFooter extends React.Component<IProps> {
         let classForActive = this.props.filterValue === "Active" ? "filter-active" : "";
         return (
             <div className="todoList-footer">
-                <div>
-                    <button onClick={this.onAllFilterClick}
-                            className={classForAll + ' ' + 'buttonSort' + ' ' + 'buttonSort1'}>
-                        All
-                    </button>
-                    <button
-                        onClick={this.onCompletedFilterClick}
-                        className={classForCompleted + ' ' + 'buttonSort' + ' ' + 'buttonSort1'}
-                    >
-                        Completed
-                    </button>
-                    <button
-                        onClick={this.onActiveFilterClick}
-                        className={classForActive + ' ' + 'buttonSort' + ' ' + 'buttonSort1'}
-                    >
-                        Active
-                    </button>
-                </div>
-
-
+                <button onClick={this.onAllFilterClick}
+                        className={classForAll + ' ' + 'buttonSort' + ' ' + 'buttonSort1'}>
+                    All
+                </button>
+                <button
+                    onClick={this.onCompletedFilterClick}
+                    className={classForCompleted + ' ' + 'buttonSort' + ' ' + 'buttonSort1'}
+                >
+                    Completed
+                </button>
+                <button
+                    onClick={this.onActiveFilterClick}
+                    className={classForActive + ' ' + 'buttonSort' + ' ' + 'buttonSort1'}
+                >
+                    Active
+                </button>
             </div>
         );
     };

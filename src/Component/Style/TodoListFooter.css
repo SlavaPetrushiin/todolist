@@ -1,5 +1,5 @@
 .buttonSort {
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
     border: none;
     color: white;
     padding: 6px 25px;
@@ -9,7 +9,7 @@
     font-size: 14px;
     margin: 4px 2px;
     border-radius: 8px;
-    -webkit-transition-duration: 0.4s; /* Safari */
+    -webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
     cursor: pointer;
 }
@@ -28,4 +28,15 @@
 .filter-active{
     background-color: #555555;
     color: #FFFFFF;
+}
+
+@media (max-width: 359px) {
+    .todoList-footer{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .buttonSort1 {
+        width: 130px;
+    }
 }
