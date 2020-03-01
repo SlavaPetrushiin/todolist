@@ -1,6 +1,6 @@
 
 .form-wrap {
-    width: 520px;
+    width: 100%;
     background: #4CAF50;
     border-radius: 20px;
     display: flex;
@@ -86,7 +86,6 @@
 
 @media (max-width: 620px) {
     .form-wrap {
-        width: 360px;
         flex-direction: column;
     }
     .profile{
