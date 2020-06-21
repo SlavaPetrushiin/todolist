@@ -1,5 +1,8 @@
 import React from "react";
 import "./Style/AddNewItemForm.css";
+import {TextField} from "@material-ui/core";
+import IconButton from '@material-ui/core/IconButton';
+import { ControlPoint } from "@material-ui/icons";
 
 interface IProps {
     addItem: Function;
@@ -39,18 +42,21 @@ class AddNewItemForm extends React.Component<IProps, IState> {
     };
 
     render = () => {
-        let classForInput = this.state.error ? "error" : "";
         return (
             <div className="todoList-newTaskForm">
-                <input
+                <TextField
+                    variant={"outlined"}
+                    label={"Type value"}
                     value={this.state.title}
-                    type="text"
-                    placeholder="New task name"
-                    className={(classForInput + ' ' + 'inputList')}
+                    error={this.state.error}
                     onChange={this.handleClick}
                     onKeyPress={this.handleEnter}
                 />
-                <button className="button" onClick={this.onAddItemClick}><span>Add</span></button>
+                <IconButton
+                    onClick={this.onAddItemClick}
+                >
+                    <ControlPoint />
+                </IconButton>
             </div>
         );
     };

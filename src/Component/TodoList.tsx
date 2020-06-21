@@ -15,6 +15,8 @@ import {
 } from "../Redux/reducer";
 import {RootState} from "../Redux/store";
 import {IObjChangeTask, ITask} from "../Redux/interfaces";
+import {IconButton} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
 
 interface IProps {
     id : string;
@@ -100,9 +102,9 @@ class ToDoList extends React.Component<IProps & IMapStateToProps & IDispatchStat
         return (
             <div className="wrapper_todoList">
                 <div className="todoList">
-                    <div className='wrapper_deleted' onClick={this.deleteToDoList}>
-                        &#10008;
-                    </div>
+                    <IconButton onClick={this.deleteToDoList}>
+                        <Delete />
+                    </IconButton>
                     <header className="header">
                         <TodoListTitle
                             title={this.props.title}

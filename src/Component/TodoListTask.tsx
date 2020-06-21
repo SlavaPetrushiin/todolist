@@ -1,6 +1,8 @@
 import React from "react";
 import {ITask} from "../Redux/interfaces";
 import "./Style/TodoListTask.css";
+import {IconButton, Checkbox, TextField} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
 
 interface IProps {
     key: string;
@@ -101,20 +103,16 @@ class TodoListTask extends React.Component<IProps, IState> {
 
         return (
             <div className="todoList-task">
-                 <input
-                    type="checkbox"
-                    checked={status}
+                 <Checkbox
                     onChange={this.onIsDoneChanged}
-                    className={classForTask + ' ' + 'my-flex-box' + ' ' + 'custom-checkbox'}
+                    checked={!!classForTask}
                 />
                 {this.state.addMode ? (
-                    <input
-                        type="text"
+                    <TextField
                         value={this.state.title}
                         autoFocus={true}
                         onBlur={this.deactivateEditMode}
                         onChange={this.onTitleChanged}
-                        className={'my-flex-box'}
                     />
                 ) : (
                     <>
@@ -128,9 +126,9 @@ class TodoListTask extends React.Component<IProps, IState> {
                             <option value="Urgently">Urgently</option>
                             <option value="Later">Later</option>
                         </select>
-                        <span onClick={this.handleDeleteTask} className={'my-flex-box' + ' ' + 'del-task'}>
-                          &#10008;
-                        </span>
+                        <IconButton onClick={this.handleDeleteTask}>
+                            <Delete />
+                        </IconButton>
                     </>
                 )}
             </div>

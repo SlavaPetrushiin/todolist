@@ -1,5 +1,6 @@
 import React from "react";
 import "./Style/TodoListFooter.css";
+import {Button} from "@material-ui/core";
 
 interface IProps {
     changeFilter: Function;
@@ -26,22 +27,26 @@ class TodoListFooter extends React.Component<IProps> {
         let classForActive = this.props.filterValue === "Active" ? "filter-active" : "";
         return (
             <div className="todoList-footer">
-                <button onClick={this.onAllFilterClick}
-                        className={classForAll + ' ' + 'buttonSort' + ' ' + 'buttonSort1'}>
+                <Button
+                    onClick={this.onAllFilterClick}
+                    variant={classForAll ? 'contained' : 'text'}
+                >
                     All
-                </button>
-                <button
+                </Button>
+                <Button
                     onClick={this.onCompletedFilterClick}
-                    className={classForCompleted + ' ' + 'buttonSort' + ' ' + 'buttonSort1'}
+                    color={"primary"}
+                    variant={classForCompleted ? 'contained' : 'text'}
                 >
                     Completed
-                </button>
-                <button
+                </Button>
+                <Button
                     onClick={this.onActiveFilterClick}
-                    className={classForActive + ' ' + 'buttonSort' + ' ' + 'buttonSort1'}
+                    color={"secondary"}
+                    variant={classForActive ? 'contained' : 'text'}
                 >
                     Active
-                </button>
+                </Button>
             </div>
         );
     };
