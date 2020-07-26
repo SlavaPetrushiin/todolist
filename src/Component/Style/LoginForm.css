@@ -1,106 +1,44 @@
-
-.form-wrap {
-    width: 100%;
-    background: #4CAF50;
-    border-radius: 20px;
-    display: flex;
-}
-.form-wrap *{transition: .1s linear}
-.profile {
-    width: 240px;
-    text-align: center;
-    padding: 30px;
+.authorization {
+  margin: 150px 0;
+  background-color: #f5f5f5;
+  border-radius: 10px;
 }
 
-.profile{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.register-bg {
+  background: #3f51b5;
+  border-radius: 10px 0 0 10px;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
 }
 
-.login-photo{
-    width: 150px;
-    height: 150px;
-    background-image: url("https://4.bp.blogspot.com/-2VPjsfW-gW0/WOWsaSnbV6I/AAAAAAAABrQ/mvzpwzYD2U0TnrmT6SP1Jh7BvwvmDwQrgCLcB/s1600/user.png");
-    background-size: cover;
-    background-position: center;
-    border-radius: 100%;
-    background-color: #3e8e41;
+.login-photo {
+  width: 150px;
+  height: 150px;
+  background-image: url("https://4.bp.blogspot.com/-2VPjsfW-gW0/WOWsaSnbV6I/AAAAAAAABrQ/mvzpwzYD2U0TnrmT6SP1Jh7BvwvmDwQrgCLcB/s1600/user.png");
+  background-size: cover;
+  background-position: center;
+  border-radius: 100%;
 }
 
 .login-form {
-    background: white;
-    width: calc(100% - 240px);
-    padding: 30px;
-    border-radius: 0 20px 20px 0;
-    color: #7b7b7b;
+  padding: 15px;
+  border-radius: 0 10px 10px 0;
 }
 
-.form-wrap form div {
-    margin-bottom: 15px;
-    position: relative;
-}
-.form-wrap h1 {
-    font-size: 24px;
-    font-weight: 400;
-    position: relative;
-    margin-top: 30px;
-}
-.form-wrap label, span {
-    display: block;
-    font-size: 14px;
-}
-.form-wrap input[type="password"], input[type="email"] {
-    width: 100%;
-    padding: 10px 15px;
-    border-width: 0;
-    background: #e6e6e6;
-    outline: none;
-    margin: 0;
-}
-.form-wrap input[type="text"]:focus, input[type="email"]:focus {
-    box-shadow: inset 0 0 0 2px rgba(0,0,0,.2);
+.login-field {
+  width: 100%;
+  margin-bottom: 15px !important;
 }
 
-.form-wrap input[type="text"]:focus, input[type="email"]:focus {
-    box-shadow: inset 0 0 0 2px rgba(0,0,0,.2);
+@media (max-width: 599px) {
+  .register-bg {
+    border-radius: 10px 10px 0 0;
+  }
+  .login-form {
+    border-radius: 0 0 10px 10px;
+  }
 }
-
-.form-wrap button {
-    padding: 10px 0;
-    border-width: 0;
-    display: block;
-    width: 120px;
-    margin: 25px auto 0;
-    background: #60e6c5;
-    color: white;
-    font-size: 14px;
-    outline: none;
-    text-transform: uppercase;
-    transition: 0.2s;
-}
-
-.form-wrap button:hover{
-    background-color: #3DE664;
-}
-
-@media (max-width: 620px) {
-    .form-wrap {
-        flex-direction: column;
-    }
-    .profile{
-        width: 100%;
-    }
-    .login-photo{
-        width: 100px;
-        height: 100px;
-    }
-    .login-form{
-        width: calc(100%);
-        border-radius: 0 0 20px 20px;
-    }
-    .form-wrap h1 {
-        margin-top: 15px;
-    }
-}
-
